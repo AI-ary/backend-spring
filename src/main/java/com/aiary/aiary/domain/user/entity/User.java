@@ -34,8 +34,8 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 500)
     private String thema;   // 테마 (변경될 수 있음)
 
-    @Column(name = "is_active", columnDefinition = "boolean default false")
-    private boolean isActive; // 활성 여부
+    @Column(name = "is_active")
+    private boolean isActive = true; // 활성 여부
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diary> diaries = new ArrayList<>();
