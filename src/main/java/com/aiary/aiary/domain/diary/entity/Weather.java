@@ -3,7 +3,7 @@ package com.aiary.aiary.domain.diary.entity;
 public enum Weather {
 
     SUNNY("맑음"),
-    Cloudy("흐림"),
+    CLOUDY("흐림"),
     RAIN("비"),
     SNOW("눈");
 
