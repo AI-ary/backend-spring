@@ -42,14 +42,14 @@ public class Diary extends BaseEntity {
     private User user;
 
     @Builder
-    public Diary(String title, Weather weather, String emoji, String drawing_url,
-                 String contents, Date diary_date, User user) {
+    public Diary(String title, Weather weather, String emoji, String drawingUrl,
+                 String contents, Date diaryDate, User user) {
         this.title = title;
         this.weather = weather;
         this.emoji = emoji;
-        this.drawingUrl = drawing_url;
+        this.drawingUrl = drawingUrl;
         this.contents = contents;
-        this.diaryDate = diary_date;
+        this.diaryDate = diaryDate;
         this.user = user;
     }
 }
