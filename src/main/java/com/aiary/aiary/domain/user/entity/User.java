@@ -41,11 +41,14 @@ public class User extends BaseEntity {
     private List<Diary> diaries = new ArrayList<>();
 
     @Builder
-    private User(String email, String nickname, String password, String thema, boolean isActive) {
+    private User(String email, String nickname, String password, String thema) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.thema = thema;
-        this.isActive = isActive;
+    }
+
+    public void inactive() {
+        this.isActive = false;
     }
 }
