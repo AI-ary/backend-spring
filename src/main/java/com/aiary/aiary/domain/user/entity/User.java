@@ -2,6 +2,7 @@ package com.aiary.aiary.domain.user.entity;
 
 
 import com.aiary.aiary.domain.diary.entity.Diary;
+import com.aiary.aiary.global.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Users")
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -33,8 +34,8 @@ public class User {
     @Column(nullable = false, length = 500)
     private String thema;   // 테마 (변경될 수 있음)
 
-    @Column(name = "is_active")
-    private boolean isActive = false; // 활성 여부
+    @Column(name = "is_active", columnDefinition = "boolean default false")
+    private boolean isActive; // 활성 여부
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diary> diaries = new ArrayList<>();
