@@ -9,12 +9,12 @@ import java.sql.Date;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Diary")
+@Table(name = "Diaries")
 public class Diary extends BaseEntity {
 
     @Id
+    @Column(name = "diary_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -25,17 +25,17 @@ public class Diary extends BaseEntity {
     @Column(nullable = false)
     private Weather weather;
 
-    @Column(nullable = false, length = 5)
+    @Column(nullable = false)
     private String emoji;
 
-    @Column(length = 500)
-    private String drawing_url;
+    @Column(name = "drawing_url", length = 500)
+    private String drawingUrl;
 
     @Column(nullable = false, length = 50)
     private String contents;
 
-    @Column(nullable = false)
-    private Date diary_date;
+    @Column(name = "drawing_date", nullable = false)
+    private Date diaryDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -47,9 +47,9 @@ public class Diary extends BaseEntity {
         this.title = title;
         this.weather = weather;
         this.emoji = emoji;
-        this.drawing_url = drawing_url;
+        this.drawingUrl = drawing_url;
         this.contents = contents;
-        this.diary_date = diary_date;
+        this.diaryDate = diary_date;
         this.user = user;
     }
 }
