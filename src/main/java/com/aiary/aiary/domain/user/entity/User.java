@@ -48,7 +48,7 @@ public class User extends BaseEntity {
         this.thema = thema;
     }
 
-    public void inactive() {
+    public void inActive() {
         this.isActive = false;
     }
 }
