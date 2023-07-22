@@ -1,4 +1,4 @@
-package com.aiary.aiary.domain.diary.dto.controller;
+package com.aiary.aiary.domain.diary.controller;
 
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
 import com.aiary.aiary.domain.diary.service.DiaryService;
