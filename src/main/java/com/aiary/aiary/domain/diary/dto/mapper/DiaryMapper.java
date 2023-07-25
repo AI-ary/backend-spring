@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DiaryMapper {
 
-    public Diary mapCreateRequestToEntity(DiaryCreateRequest diaryCreateRequest, User user){
+    public Diary toCreateRequestDTO(DiaryCreateRequest diaryCreateRequest, User user){
         return Diary.builder()
                 .title(diaryCreateRequest.getTitle())
                 .contents(diaryCreateRequest.getContents())
