@@ -3,8 +3,6 @@ package com.aiary.aiary.domain.diary.service;
 import com.aiary.aiary.domain.diary.dto.mapper.DiaryMapper;
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
 import com.aiary.aiary.domain.diary.entity.Diary;
-import com.aiary.aiary.domain.diary.entity.Weather;
-import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
 import com.aiary.aiary.domain.diary.repository.DiaryRepository;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.repository.UserRepository;
