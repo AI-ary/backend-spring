@@ -23,7 +23,7 @@ public abstract class BaseEntity {
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
-    public void inDeleted(){
+    public void delete(){
         isDeleted = true;
     }
 
