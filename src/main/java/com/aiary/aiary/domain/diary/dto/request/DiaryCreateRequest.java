@@ -1,18 +1,19 @@
 package com.aiary.aiary.domain.diary.dto.request;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Getter
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class DiaryCreateRequest {
 
-    @NotNull(message = "사용자 Id는 필수 입니다.")
-    private int userId;
+    @NotNull(message = "사용자 id는 필수 입니다.")
+    private Long userId;
 
     @NotBlank(message = "일기 제목은 필수 입니다.")
     private String title;
@@ -29,7 +30,6 @@ public class DiaryCreateRequest {
     @NotNull(message = "일기 날짜는 필수 입니다.")
     private Date diaryDate;
 
-    @NotNull(message = "일기 주소는 필수 입니다.")
     private String drawingUrl;
 
 }
