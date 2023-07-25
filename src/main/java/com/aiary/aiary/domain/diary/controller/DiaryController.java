@@ -2,8 +2,8 @@ package com.aiary.aiary.domain.diary.controller;
 
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
 import com.aiary.aiary.domain.diary.service.DiaryService;
-import com.aiary.aiary.global.response.ResultCode;
-import com.aiary.aiary.global.response.ResultResponse;
+import com.aiary.aiary.global.result.ResultCode;
+import com.aiary.aiary.global.result.ResultResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

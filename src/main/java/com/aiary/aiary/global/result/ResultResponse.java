@@ -1,4 +1,4 @@
-package com.aiary.aiary.global.response;
+package com.aiary.aiary.global.result;
 
 import lombok.Getter;
 
