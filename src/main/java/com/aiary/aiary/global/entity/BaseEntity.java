@@ -22,5 +22,10 @@ public abstract class BaseEntity {
     private LocalDateTime updatedAt;
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    public void delete(){
+        isDeleted = true;
+    }
+
 }
 

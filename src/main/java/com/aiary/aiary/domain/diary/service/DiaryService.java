@@ -24,4 +24,10 @@ public class DiaryService {
         Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateRequest, findUser);
         diaryRepository.save(newDiary);
     }
+  
+    @Transactional
+    public void deleteDiary(Long diaryId){
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow(DiaryNotFoundException::new);
+        diary.delete();
+    }
 }

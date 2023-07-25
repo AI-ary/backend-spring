@@ -1,5 +1,6 @@
 package com.aiary.aiary.domain.diary.controller;
 
+
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
 import com.aiary.aiary.domain.diary.service.DiaryService;
 import com.aiary.aiary.global.result.ResultCode;
@@ -25,5 +26,11 @@ public class DiaryController {
     public ResponseEntity<ResultResponse> createDiary(@Valid @RequestBody DiaryCreateRequest createRequest){
         diaryService.createDiary(createRequest);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_CREATE_SUCCESS));
+    }
+    
+    @DeleteMapping("/{diaryId}")
+    public ResponseEntity<ResultResponse> deleteDiary(@PathVariable Long diaryId){
+        diaryService.deleteDiary(diaryId);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_DELETE_SUCCESS));
     }
 }
