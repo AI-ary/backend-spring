@@ -4,6 +4,7 @@ import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
 import com.aiary.aiary.domain.diary.service.DiaryService;
 import com.aiary.aiary.global.response.ResultCode;
 import com.aiary.aiary.global.response.ResultResponse;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequiredArgsConstructor
-@RequestMapping("/api/v2/diaries")
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequestMapping("/api/diaries")
 public class DiaryController {
 
     private final DiaryService diaryService;
