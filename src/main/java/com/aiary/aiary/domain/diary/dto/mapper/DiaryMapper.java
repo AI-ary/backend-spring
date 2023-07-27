@@ -32,7 +32,7 @@ public class DiaryMapper {
                 .weather(diary.getWeather())
                 .emoji(diary.getEmoji())
                 .contents(diary.getContents())
-                .diaryDate(diary.getDiaryDate())
+                .diaryDate(diary.getDiaryDate().toString())
                 .drawingUrl(diary.getDrawingUrl())
                 .build();
     }
