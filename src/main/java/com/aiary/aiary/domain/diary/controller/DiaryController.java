@@ -9,11 +9,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.Date;
 
 @Controller
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -32,5 +31,12 @@ public class DiaryController {
     public ResponseEntity<ResultResponse> deleteDiary(@PathVariable Long diaryId){
         diaryService.deleteDiary(diaryId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_DELETE_SUCCESS));
+    }
+
+    @GetMapping
+    public ResponseEntity<ResultResponse> findMonthlyDiary(@RequestParam("user_id") Long userId,
+                                                           @RequestParam("diary_date") Date diaryDate){
+        return ResponseEntity.ok(ResultResponse
+                .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(userId, diaryDate)));
     }
 }
