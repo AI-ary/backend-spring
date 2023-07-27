@@ -37,6 +37,13 @@ public class DiaryMapper {
                 .build();
     }
 
+    public MonthlyDiaryInfo toMonthlyDiaryList(List<Diary> monthlyDiaries){
+        List<DiaryInfo> diaryInfos = monthlyDiaries.stream()
+                .map(this::toEntity)
+                .collect(Collectors.toList());
+        return MonthlyDiaryInfo.builder().monthlyDiaryInfo(diaryInfos).build();
+    }
+
 
 
 
