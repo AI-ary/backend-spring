@@ -47,4 +47,10 @@ public class UserController {
         }
         return ResponseEntity.ok(ResultResponse.of(USER_EMAIL_NOT_DUPLICATED, false));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<JwtToken> login(@RequestBody UserLoginReq userLoginReq) {
+        JwtToken token = loginService.login(userLoginReq.getEmail(), userLoginReq.getPassword());
+        return ResponseEntity.ok(token);
+    }
 }
