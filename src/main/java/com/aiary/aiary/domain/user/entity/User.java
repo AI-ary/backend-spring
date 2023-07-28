@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 250)
     private String password;
 
-    @Column(nullable = false, length = 500)
+    @Column(length = 500)
     private String thema;   // 테마 (변경될 수 있음)
 
     @Column(name = "is_active")
@@ -41,14 +42,18 @@ public class User extends BaseEntity {
     private List<Diary> diaries = new ArrayList<>();
 
     @Builder
-    private User(String email, String nickname, String password, String thema) {
+    private User(String email, String nickname, String password) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.thema = thema;
+        this.thema = "";
     }
 
     public void inActive() {
         this.isActive = false;
+    }
+
+    public void setEncryptedPassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(password);
     }
 }
