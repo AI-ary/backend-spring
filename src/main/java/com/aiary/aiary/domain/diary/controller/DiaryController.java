@@ -7,12 +7,13 @@ import com.aiary.aiary.global.result.ResultCode;
 import com.aiary.aiary.global.result.ResultResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.sql.Date;
+import java.util.Date;
 
 @Controller
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -35,7 +36,8 @@ public class DiaryController {
 
     @GetMapping
     public ResponseEntity<ResultResponse> findMonthlyDiary(@RequestParam("user_id") Long userId,
-                                                           @RequestParam("diary_date") Date diaryDate){
+                                                           @RequestParam("diary_date")
+                                                           @DateTimeFormat(pattern = "yyyy-MM") Date diaryDate){
         return ResponseEntity.ok(ResultResponse
                 .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(userId, diaryDate)));
     }
