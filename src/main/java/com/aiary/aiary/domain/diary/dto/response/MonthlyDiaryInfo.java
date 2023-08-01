@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -13,5 +12,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MonthlyDiaryInfo {
-    List<DiaryInfo> monthlyDiaryInfo = new ArrayList<>(32);
+    List<DiaryInfo> monthlyDiaryInfo;
+
 }
+
