@@ -1,6 +1,7 @@
 package com.aiary.aiary.domain.user.mapper;
 
 import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
+import com.aiary.aiary.domain.user.entity.Role;
 import com.aiary.aiary.domain.user.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ public class UserMapper {
                 .email(userJoinReq.getEmail())
                 .password(userJoinReq.getPassword())
                 .nickname(userJoinReq.getNickname())
+                .role(Role.USER)
                 .build();
     }
 }

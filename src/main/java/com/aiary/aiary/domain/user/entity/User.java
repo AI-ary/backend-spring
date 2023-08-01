@@ -35,6 +35,10 @@ public class User extends BaseEntity {
     @Column(length = 500)
     private String thema;   // 테마 (변경될 수 있음)
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Column(name = "is_active")
     private boolean isActive = true; // 활성 여부
 
@@ -42,10 +46,11 @@ public class User extends BaseEntity {
     private List<Diary> diaries = new ArrayList<>();
 
     @Builder
-    private User(String email, String nickname, String password) {
+    private User(String email, String nickname, String password, Role role) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
+        this.role = role;
         this.thema = "";
     }
 
@@ -56,4 +61,5 @@ public class User extends BaseEntity {
     public void setEncryptedPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);
     }
+
 }
