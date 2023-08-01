@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.aiary.aiary.global.result.ResultCode.USER_EMAIL_NOT_DUPLICATED;
-import static com.aiary.aiary.global.result.ResultCode.USER_REGISTRATION_SUCCESS;
+import static com.aiary.aiary.global.result.ResultCode.*;
 
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -49,8 +48,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtToken> login(@RequestBody UserLoginReq userLoginReq) {
+    public ResponseEntity<ResultResponse> login(@RequestBody UserLoginReq userLoginReq) {
         JwtToken token = loginService.login(userLoginReq.getEmail(), userLoginReq.getPassword());
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(ResultResponse.of(USER_LOGIN_SUCCESS, token));
     }
 }
