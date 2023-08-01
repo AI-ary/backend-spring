@@ -1,7 +1,7 @@
 package com.aiary.aiary.domain.user.service;
 
-import com.aiary.aiary.domain.user.entity.SessionUser;
 import com.aiary.aiary.domain.user.entity.User;
+import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.exception.UserNotFoundException;
 import com.aiary.aiary.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,6 @@ public class CustomUserDetailService implements UserDetailsService {
         User principal = userRepository.findUserByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
 
-        return new SessionUser(principal);
+        return new UserDetail(principal);
     }
 }
