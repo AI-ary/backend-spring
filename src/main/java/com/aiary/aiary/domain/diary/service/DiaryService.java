@@ -33,14 +33,19 @@ public class DiaryService {
   
     @Transactional
     public void deleteDiary(Long diaryId){
-        Diary diary = diaryRepository.findById(diaryId).orElseThrow(DiaryNotFoundException::new);
-        diary.delete();
+        Diary deleteDiary = findDiaryById(diaryId);
+        deleteDiary.delete();
     }
 
     @Transactional(readOnly = true)
     public MonthlyDiaryInfo findMonthlyDiary(Long userId, Date diaryDate){
         List<Diary> monthlyDiaries = diaryRepository.findMonthlyDiaryByUserId(userId, diaryDate);
         return diaryMapper.toMonthlyDiaryList(monthlyDiaries);
+    }
+
+    @Transactional(readOnly = true)
+    public Diary findDiaryById(Long diaryId){
+        return diaryRepository.findById(diaryId).orElseThrow(DiaryNotFoundException::new);
     }
 
 }
