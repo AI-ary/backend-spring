@@ -1,15 +1,16 @@
 package com.aiary.aiary.domain.diary.dto.request;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DiaryCreateRequest {
 
     @NotNull(message = "사용자 id는 필수 입니다.")
@@ -28,7 +29,7 @@ public class DiaryCreateRequest {
     private String contents;
 
     @NotNull(message = "일기 날짜는 필수 입니다.")
-    private Date diaryDate;
+    private LocalDate diaryDate;
 
     private String drawingUrl;
 

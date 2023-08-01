@@ -5,7 +5,7 @@ import com.aiary.aiary.global.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -35,7 +35,7 @@ public class Diary extends BaseEntity {
     private String contents;
 
     @Column(name = "drawing_date", nullable = false)
-    private Date diaryDate;
+    private LocalDate diaryDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -43,7 +43,7 @@ public class Diary extends BaseEntity {
 
     @Builder
     public Diary(String title, Weather weather, String emoji, String drawingUrl,
-                 String contents, Date diaryDate, User user) {
+                 String contents, LocalDate diaryDate, User user) {
         this.title = title;
         this.weather = weather;
         this.emoji = emoji;
