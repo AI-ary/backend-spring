@@ -14,10 +14,12 @@ public enum ErrorCode {
   // 예시
   // User 도메인
   INVALID_PASSWORD(400, "U001", "잘못된 비밀번호"),
-  USER_NOT_FOUND_ERROR(400, "U002", "사용자를 찾을 수 없음"),
+  USER_NOT_FOUND_ERROR(400, "U002", "존재하지 않는 사용자"),
   UNAUTHORIZED_ACCESS_ERROR(403, "U003", "승인되지 않은 접근"),
   USER_EMAIL_DUPLICATED(409, "U004", "회원 아이디 중복"),
-  ;
+  
+  // 다이어리
+  DIARY_NOT_FOUND_ERROR(400, "D001", "존재하지 않는 일기");
 
   private final int status;
   private final String code;
