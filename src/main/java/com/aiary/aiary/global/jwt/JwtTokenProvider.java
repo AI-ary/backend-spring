@@ -98,4 +98,18 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+    // 만료시간
+    public Long getExpiration(String accessToken) {
+        // 남은 유효시간
+        Date expiration = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(accessToken)
+                .getBody()
+                .getExpiration();
+        // 현재 시간
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
 }

@@ -52,4 +52,10 @@ public class UserController {
         JwtToken token = loginService.login(userLoginReq.getEmail(), userLoginReq.getPassword());
         return ResponseEntity.ok(ResultResponse.of(USER_LOGIN_SUCCESS, token));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ResultResponse> logout(@RequestBody JwtToken token) {
+        loginService.logout(token);
+        return ResponseEntity.ok(ResultResponse.of(USER_LOGOUT_SUCCESS));
+    }
 }
