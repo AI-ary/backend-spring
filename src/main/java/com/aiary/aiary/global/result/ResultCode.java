@@ -20,6 +20,9 @@ public enum ResultCode {
   DIARY_READ_SUCCESS("D003", "그림일기 조회 성공");
   
 
+    // S3
+    S3_UPLOAD_SUCCESS("S001", "S3 업로드 성공");
+
   private final String code;
   private final String message;
 }
