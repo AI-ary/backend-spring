@@ -7,12 +7,12 @@ import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
 import com.aiary.aiary.domain.diary.repository.DiaryRepository;
 import com.aiary.aiary.domain.user.entity.User;
+import com.aiary.aiary.domain.user.exception.UserNotFoundException;
 import com.aiary.aiary.domain.user.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 
@@ -24,10 +24,9 @@ public class DiaryService {
     private final UserRepository userRepository ;
     private final DiaryMapper diaryMapper;
 
-    public void createDiary(DiaryCreateRequest diaryCreateRequest){
-        User findUser = userRepository.findById(diaryCreateRequest.getUserId()).orElseThrow(IllegalAccessError::new);
-
-        Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateRequest, findUser);
+    public void createDiary(DiaryCreateRequest diaryCreateRequest, String drawingUrl) {
+        User findUser = userRepository.findById(diaryCreateRequest.getUserId()).orElseThrow(UserNotFoundException::new);
+        Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateRequest, findUser, drawingUrl);
         diaryRepository.save(newDiary);
     }
   

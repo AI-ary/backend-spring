@@ -3,7 +3,6 @@ package com.aiary.aiary.domain.diary.dto.request;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -30,7 +29,4 @@ public class DiaryCreateRequest {
 
     @NotNull(message = "일기 날짜는 필수 입니다.")
     private LocalDate diaryDate;
-
-    private String drawingUrl;
-
 }

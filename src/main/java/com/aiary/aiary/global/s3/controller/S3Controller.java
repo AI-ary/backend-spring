@@ -1,6 +1,5 @@
 package com.aiary.aiary.global.s3.controller;
 
-import com.aiary.aiary.global.result.ResultCode;
 import com.aiary.aiary.global.result.ResultResponse;
 import com.aiary.aiary.global.s3.service.S3UploadService;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -25,8 +24,8 @@ public class S3Controller {
 
     @PostMapping("/upload")
     public ResponseEntity<ResultResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        String url = s3UploadService.saveFile(multipartFile);
+        String drawingUrl = s3UploadService.saveFile(multipartFile);
 
-        return ResponseEntity.ok(ResultResponse.of(S3_UPLOAD_SUCCESS, url));
+        return ResponseEntity.ok(ResultResponse.of(S3_UPLOAD_SUCCESS, drawingUrl));
     }
 }
