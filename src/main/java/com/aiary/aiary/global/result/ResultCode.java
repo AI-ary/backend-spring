@@ -12,6 +12,7 @@ public enum ResultCode {
   USER_EMAIL_NOT_DUPLICATED("U003", "회원 아이디 중복되지 않음"),
   USER_LOGIN_SUCCESS("U004", "회원 로그인 성공"),
   USER_LOGOUT_SUCCESS("U005", "회원 로그아웃 성공"),
+  USER_REISSUE_SUCCESS("U006", "토큰 재발급 성공"),
 
   // Diary
   DIARY_CREATE_SUCCESS("D001", "그림일기 등록 성공"),
