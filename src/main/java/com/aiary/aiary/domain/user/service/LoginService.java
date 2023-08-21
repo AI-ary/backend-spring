@@ -1,5 +1,6 @@
 package com.aiary.aiary.domain.user.service;
 
+import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
 import com.aiary.aiary.domain.user.dto.request.UserTokenReq;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.exception.*;
@@ -28,16 +29,16 @@ public class LoginService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final UserRepository userRepository;
 
-    public JwtToken login(String email, String password) {
+    public JwtToken login(UserLoginReq userLoginReq) {
         // 로그인 시  일치하면 유저 정보 가져오기
-        User user = userRepository.findUserByEmail(email)
+        User user = userRepository.findUserByEmail(userLoginReq.getEmail())
                 .orElseThrow(UserNotFoundException::new);
 
-        if (!passwordEncoder.matches(password, user.getPassword())){
+        if (!passwordEncoder.matches(userLoginReq.getPassword(), user.getPassword())){
             throw new InValidPasswordException();
         }
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userLoginReq.getEmail(), userLoginReq.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         JwtToken jwt = jwtTokenProvider.generateToken(authentication);
 

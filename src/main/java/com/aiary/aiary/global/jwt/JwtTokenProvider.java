@@ -22,8 +22,8 @@ public class JwtTokenProvider {
     private final CustomUserDetailService customUserDetailService;
 
     private final Key key;
-    private long accessTokenValidTime = 30 * 60 * 1000L; // 토큰 유효시간 30분
-    private long refreshTokenValidTime = 36 * 60 * 60 * 1000L;  // 3일
+    private final long accessTokenValidTime = 30 * 60 * 1000L; // 토큰 유효시간 30분
+    private final long refreshTokenValidTime = 36 * 60 * 60 * 1000L;  // 3일
 
     // 시크릿키 초기화, secretKey를 Base64로 인코딩한다.
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, CustomUserDetailService customUserDetailService) {
@@ -75,7 +75,11 @@ public class JwtTokenProvider {
     // 복호화
     private Claims parseClaims(String accessToken) {
         try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(accessToken)
+                    .getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
@@ -84,7 +88,10 @@ public class JwtTokenProvider {
     // 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");

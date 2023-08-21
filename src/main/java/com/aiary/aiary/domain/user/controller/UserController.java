@@ -42,7 +42,7 @@ public class UserController {
 
     @Operation(summary = "이메일 중복확인")
     @GetMapping("/duplicated/{email}")
-    public ResponseEntity<ResultResponse> isDuplicatedEmail(@PathVariable String email) {
+    public ResponseEntity<ResultResponse> checkEmail(@PathVariable String email) {
         boolean isDuplicated = userService.isDuplicatedEmail(email);
 
         if (isDuplicated) {
@@ -54,7 +54,7 @@ public class UserController {
     @Operation(summary = "로그인")
     @PostMapping("/login")
     public ResponseEntity<ResultResponse> login(@RequestBody UserLoginReq userLoginReq) {
-        JwtToken token = loginService.login(userLoginReq.getEmail(), userLoginReq.getPassword());
+        JwtToken token = loginService.login(userLoginReq);
         return ResponseEntity.ok(ResultResponse.of(USER_LOGIN_SUCCESS, token));
     }
 
