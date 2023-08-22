@@ -28,15 +28,7 @@ public class AuthService {
     private final UserValidator userValidator;
 
     public JwtToken login(UserLoginReq userLoginReq) {
-//        // 로그인 시  일치하면 유저 정보 가져오기
-//        User user = userRepository.findUserByEmail(userLoginReq.getEmail())
-//                .orElseThrow(UserNotFoundException::new);
-//
-//        if (!passwordEncoder.matches(userLoginReq.getPassword(), user.getPassword())){
-//            throw new InValidPasswordException();
-//        }
         User user = userValidator.loginUser(userLoginReq);
-
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userLoginReq.getEmail(), userLoginReq.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);

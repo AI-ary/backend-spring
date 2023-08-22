@@ -29,7 +29,7 @@ public class DiaryController {
 
     @Operation(summary = "일기 등록")
     @PostMapping
-    public ResponseEntity<ResultResponse> createDiary(@AuthenticationPrincipal UserDetail user,  @Valid @RequestBody DiaryCreateRequest createRequest){
+    public ResponseEntity<ResultResponse> createDiary(@AuthenticationPrincipal UserDetail user, @Valid @RequestBody DiaryCreateRequest createRequest){
         diaryService.createDiary(user.getUser(), createRequest);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_CREATE_SUCCESS));
     }
