@@ -47,7 +47,7 @@ public class DiaryController {
                                                            @RequestParam("diary_date")
                                                            @DateTimeFormat(pattern = "yyyy-MM") Date diaryDate){
         return ResponseEntity.ok(ResultResponse
-                .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(user.getUser().getId(), diaryDate)));
+                .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(user.getUserId(), diaryDate)));
     }
 
     @Operation(summary = "일기 제목/내용 검색")
