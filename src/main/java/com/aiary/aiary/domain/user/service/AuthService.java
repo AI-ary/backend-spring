@@ -4,7 +4,7 @@ import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
 import com.aiary.aiary.domain.user.dto.request.UserTokenReq;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.exception.*;
-import com.aiary.aiary.domain.user.repository.UserRepository;
+import com.aiary.aiary.domain.user.validator.UserValidator;
 import com.aiary.aiary.global.jwt.JwtToken;
 import com.aiary.aiary.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -22,21 +21,22 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class LoginService {
+public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, Object> redisTemplate;
-    private final UserRepository userRepository;
+    private final UserValidator userValidator;
 
     public JwtToken login(UserLoginReq userLoginReq) {
-        // 로그인 시  일치하면 유저 정보 가져오기
-        User user = userRepository.findUserByEmail(userLoginReq.getEmail())
-                .orElseThrow(UserNotFoundException::new);
+//        // 로그인 시  일치하면 유저 정보 가져오기
+//        User user = userRepository.findUserByEmail(userLoginReq.getEmail())
+//                .orElseThrow(UserNotFoundException::new);
+//
+//        if (!passwordEncoder.matches(userLoginReq.getPassword(), user.getPassword())){
+//            throw new InValidPasswordException();
+//        }
+        User user = userValidator.loginUser(userLoginReq);
 
-        if (!passwordEncoder.matches(userLoginReq.getPassword(), user.getPassword())){
-            throw new InValidPasswordException();
-        }
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userLoginReq.getEmail(), userLoginReq.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
