@@ -13,9 +13,6 @@ import java.time.LocalDate;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DiaryCreateRequest {
 
-    @NotNull(message = "사용자 id는 필수 입니다.")
-    private Long userId;
-
     @NotBlank(message = "일기 제목은 필수 입니다.")
     private String title;
 
