@@ -3,6 +3,7 @@ package com.aiary.aiary.domain.diary.controller;
 
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
 import com.aiary.aiary.domain.diary.service.DiaryService;
+import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.global.result.ResultCode;
 import com.aiary.aiary.global.result.ResultResponse;
 import com.aiary.aiary.global.s3.service.S3UploadService;
@@ -12,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,9 +33,11 @@ public class DiaryController {
 
     @Operation(summary = "일기 등록")
     @PostMapping
-    public ResponseEntity<ResultResponse> createDiary(@RequestPart("file") MultipartFile multipartFile, @Valid @RequestPart DiaryCreateRequest createRequest) throws IOException {
+    public ResponseEntity<ResultResponse> createDiary(@AuthenticationPrincipal UserDetail user,
+                                                      @RequestPart("file") MultipartFile multipartFile,
+                                                      @Valid @RequestPart(value="createRequest") DiaryCreateRequest createRequest) throws IOException {
         String drawingUrl = s3UploadService.saveFile(multipartFile);
-        diaryService.createDiary(createRequest, drawingUrl);
+        diaryService.createDiary(user.getUser(), createRequest, drawingUrl);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_CREATE_SUCCESS));
     }
 
@@ -46,10 +50,10 @@ public class DiaryController {
 
     @Operation(summary = "일기 월 별 조회")
     @GetMapping
-    public ResponseEntity<ResultResponse> findMonthlyDiary(@RequestParam("user_id") Long userId,
+    public ResponseEntity<ResultResponse> findMonthlyDiary(@AuthenticationPrincipal UserDetail user,
                                                            @RequestParam("diary_date")
                                                            @DateTimeFormat(pattern = "yyyy-MM") Date diaryDate){
         return ResponseEntity.ok(ResultResponse
-                .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(userId, diaryDate)));
+                .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(user.getUser().getId(), diaryDate)));
     }
 }
