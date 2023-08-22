@@ -49,4 +49,16 @@ public class DiaryController {
         return ResponseEntity.ok(ResultResponse
                 .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(user.getUser().getId(), diaryDate)));
     }
+
+    @Operation(summary = "일기 제목/내용 검색")
+    @GetMapping("/search")
+    public ResponseEntity<ResultResponse> searchDiariesByKeyWord(@AuthenticationPrincipal UserDetail user,
+                                                                 @RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "10")int size,
+                                                                 @RequestParam String keyword){
+        return ResponseEntity.ok(ResultResponse
+                .of(ResultCode.DIARY_READ_SUCCESS,
+                        diaryService.searchDiariesByKeyword(user.getUserId(), page, size, keyword)));
+
+    }
 }
