@@ -6,8 +6,8 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserTokenReq {
     @NotBlank(message = "accessToken 을 입력해주세요.")
     private String accessToken;

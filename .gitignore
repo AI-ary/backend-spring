@@ -38,3 +38,6 @@ out/
 .DS_Store
 
 application.yml
+data
+.env
+
