@@ -39,3 +39,5 @@ out/
 
 application.yml
 data
+.env
+
