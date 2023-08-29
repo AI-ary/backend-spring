@@ -36,8 +36,8 @@ public class DiaryController {
 
     @Operation(summary = "일기 삭제")
     @DeleteMapping("/{diaryId}")
-    public ResponseEntity<ResultResponse> deleteDiary(@PathVariable Long diaryId){
-        diaryService.deleteDiary(diaryId);
+    public ResponseEntity<ResultResponse> deleteDiary(@AuthenticationPrincipal UserDetail user, @PathVariable Long diaryId){
+        diaryService.deleteDiary(user, diaryId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_DELETE_SUCCESS));
     }
 
