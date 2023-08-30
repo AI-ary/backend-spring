@@ -16,7 +16,7 @@ public enum ErrorCode {
   // User 도메인
   INVALID_PASSWORD(400, "U001", "잘못된 비밀번호"),
   USER_NOT_FOUND_ERROR(400, "U002", "존재하지 않는 사용자"),
-  UNAUTHORIZED_ACCESS_ERROR(403, "U003", "승인되지 않은 접근"),
+  UNAUTHORIZED_ACCESS_ERROR(403, "U003", "권한이 없는 사용자"),
   USER_EMAIL_DUPLICATED(409, "U004", "회원 아이디 중복"),
   
   // 다이어리
