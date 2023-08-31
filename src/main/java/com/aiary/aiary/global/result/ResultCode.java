@@ -13,6 +13,7 @@ public enum ResultCode {
   USER_LOGIN_SUCCESS("U004", "회원 로그인 성공"),
   USER_LOGOUT_SUCCESS("U005", "회원 로그아웃 성공"),
   USER_REISSUE_SUCCESS("U006", "토큰 재발급 성공"),
+  USER_UPDATE_THEME_SUCCESS("U007", "회원 테마 변경 성공"),
 
   // Diary
   DIARY_CREATE_SUCCESS("D001", "그림일기 등록 성공"),
