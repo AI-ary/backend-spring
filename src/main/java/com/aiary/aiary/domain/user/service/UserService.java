@@ -9,6 +9,7 @@ import com.aiary.aiary.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
     }

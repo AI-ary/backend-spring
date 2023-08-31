@@ -1,5 +1,6 @@
 package com.aiary.aiary.global.jwt;
 
+import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.service.CustomUserDetailService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -34,7 +35,7 @@ public class JwtTokenProvider {
 
 
     // JWT 토큰 생성
-    public JwtToken generateToken(Authentication authentication) {
+    public JwtToken generateToken(Authentication authentication, User user) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -62,6 +63,7 @@ public class JwtTokenProvider {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .refreshTokenExpirationTime(refreshTokenValidTime)
+                .theme(user.getTheme())
                 .build();
     }
 
@@ -115,7 +117,7 @@ public class JwtTokenProvider {
                 .getBody()
                 .getExpiration();
         // 현재 시간
-        Long now = new Date().getTime();
+        long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
 }
