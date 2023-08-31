@@ -1,6 +1,7 @@
 package com.aiary.aiary.domain.user.service;
 
 import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
+import com.aiary.aiary.domain.user.dto.request.UserThemeReq;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.exception.UserNotFoundException;
 import com.aiary.aiary.domain.user.mapper.UserMapper;
@@ -23,6 +24,11 @@ public class UserService {
     public void register(UserJoinReq userJoinReq) {
         User user = userMapper.toEntity(userJoinReq);
         user.setEncryptedPassword(passwordEncoder);
+        userRepository.save(user);
+    }
+
+    public void updateTheme(User user, UserThemeReq userThemeReq){
+        user.updateTheme(userThemeReq.getTheme());
         userRepository.save(user);
     }
 
