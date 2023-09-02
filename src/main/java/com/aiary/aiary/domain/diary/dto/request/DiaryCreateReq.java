@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class DiaryCreateRequest {
+public class DiaryCreateReq {
 
     @NotBlank(message = "일기 제목은 필수 입니다.")
     private String title;

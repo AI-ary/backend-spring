@@ -1,8 +1,8 @@
 package com.aiary.aiary.domain.diary.dto.mapper;
 
-import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
-import com.aiary.aiary.domain.diary.dto.response.DiaryInfo;
-import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryInfo;
+import com.aiary.aiary.domain.diary.dto.request.DiaryCreateReq;
+import com.aiary.aiary.domain.diary.dto.response.DiaryRes;
+import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryRes;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.entity.Weather;
 import com.aiary.aiary.domain.user.entity.User;
@@ -14,20 +14,20 @@ import java.util.stream.Collectors;
 @Component
 public class DiaryMapper {
 
-    public Diary toCreateRequestDTO(DiaryCreateRequest diaryCreateRequest, User user){
+    public Diary toCreateRequestDTO(DiaryCreateReq diaryCreateReq, User user){
         return Diary.builder()
-                .title(diaryCreateRequest.getTitle())
-                .contents(diaryCreateRequest.getContents())
-                .weather(Weather.valueOf(diaryCreateRequest.getWeather()))
-                .emoji(diaryCreateRequest.getEmoji())
-                .drawingUrl(diaryCreateRequest.getDrawingUrl())
-                .diaryDate(diaryCreateRequest.getDiaryDate())
+                .title(diaryCreateReq.getTitle())
+                .contents(diaryCreateReq.getContents())
+                .weather(Weather.valueOf(diaryCreateReq.getWeather()))
+                .emoji(diaryCreateReq.getEmoji())
+                .drawingUrl(diaryCreateReq.getDrawingUrl())
+                .diaryDate(diaryCreateReq.getDiaryDate())
                 .user(user)
                 .build();
     }
 
-    public DiaryInfo toEntity(Diary diary){
-        return DiaryInfo.builder()
+    public DiaryRes toEntity(Diary diary){
+        return DiaryRes.builder()
                 .diaryId(diary.getId())
                 .title(diary.getTitle())
                 .weather(diary.getWeather())
@@ -38,11 +38,11 @@ public class DiaryMapper {
                 .build();
     }
 
-    public MonthlyDiaryInfo toMonthlyDiaryList(List<Diary> monthlyDiaries){
-        List<DiaryInfo> diaryInfos = monthlyDiaries.stream()
+    public MonthlyDiaryRes toMonthlyDiaryList(List<Diary> monthlyDiaries){
+        List<DiaryRes> diaryRes = monthlyDiaries.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
-        return MonthlyDiaryInfo.builder().monthlyDiaryInfo(diaryInfos).build();
+        return MonthlyDiaryRes.builder().monthlyDiaryRes(diaryRes).build();
     }
 
 

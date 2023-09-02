@@ -1,8 +1,8 @@
 package com.aiary.aiary.domain.diary.service;
 
 import com.aiary.aiary.domain.diary.dto.mapper.DiaryMapper;
-import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
-import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryInfo;
+import com.aiary.aiary.domain.diary.dto.request.DiaryCreateReq;
+import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryRes;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
 import com.aiary.aiary.domain.diary.repository.DiaryRepository;
@@ -28,8 +28,8 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final DiaryMapper diaryMapper;
 
-    public void createDiary(UserDetail userDetail, DiaryCreateRequest diaryCreateRequest){
-        Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateRequest, userDetail.getUser());
+    public void createDiary(UserDetail userDetail, DiaryCreateReq diaryCreateReq){
+        Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateReq, userDetail.getUser());
         diaryRepository.save(newDiary);
     }
   
@@ -45,7 +45,7 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public MonthlyDiaryInfo findMonthlyDiary(UserDetail userDetail, String diaryDate){
+    public MonthlyDiaryRes findMonthlyDiaryByDate(UserDetail userDetail, String diaryDate){
         Long userId = userDetail.getUserId();
         LocalDate monthDate = LocalDate.parse(diaryDate + FIRST_DAY);
         List<Diary> monthlyDiaries = diaryRepository.findMonthlyDiaryByUserId(userId, monthDate);
