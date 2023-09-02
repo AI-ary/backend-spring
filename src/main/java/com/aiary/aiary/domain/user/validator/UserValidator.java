@@ -7,7 +7,6 @@ import com.aiary.aiary.domain.user.exception.InValidPasswordException;
 import com.aiary.aiary.domain.user.exception.UserDuplicatedException;
 import com.aiary.aiary.domain.user.exception.UserNotFoundException;
 import com.aiary.aiary.domain.user.repository.UserRepository;
-import com.aiary.aiary.domain.user.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,12 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserValidator {
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void isDuplicatedEmail (UserJoinReq request) {
-        if (userService.isDuplicatedEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserDuplicatedException();
         }
     }
