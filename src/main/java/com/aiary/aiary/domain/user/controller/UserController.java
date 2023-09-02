@@ -21,8 +21,8 @@ import static com.aiary.aiary.global.result.ResultCode.*;
 
 @Tag(name = "User", description = "사용자 API")
 @RestController
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@RequestMapping("/api/users")
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
     private final AuthService authService;

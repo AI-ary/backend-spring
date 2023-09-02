@@ -7,6 +7,7 @@ import com.aiary.aiary.domain.user.exception.*;
 import com.aiary.aiary.domain.user.validator.UserValidator;
 import com.aiary.aiary.global.jwt.JwtToken;
 import com.aiary.aiary.global.jwt.JwtTokenProvider;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
