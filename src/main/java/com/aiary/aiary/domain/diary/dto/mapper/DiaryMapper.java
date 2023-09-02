@@ -28,6 +28,7 @@ public class DiaryMapper {
 
     public DiaryInfo toEntity(Diary diary){
         return DiaryInfo.builder()
+                .diaryId(diary.getId())
                 .title(diary.getTitle())
                 .weather(diary.getWeather())
                 .emoji(diary.getEmoji())

@@ -12,6 +12,7 @@ import lombok.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DiaryInfo {
 
+    private Long diaryId;
     private String title;
     private Weather weather;
     private String emoji;
