@@ -2,12 +2,13 @@ package com.aiary.aiary.domain.diary.service;
 
 import com.aiary.aiary.domain.diary.dto.mapper.DiaryMapper;
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
-import com.aiary.aiary.domain.diary.dto.response.DiariesSearchByKeyword;
+import com.aiary.aiary.domain.diary.dto.response.SearchDiariesRes;
 import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryInfo;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
 import com.aiary.aiary.domain.diary.repository.DiaryRepository;
 import com.aiary.aiary.domain.user.entity.User;
+import com.aiary.aiary.domain.user.entity.UserDetail;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiaryService {
 
+    private static final String FIRST_DAY = "-01";
     private final DiaryRepository diaryRepository;
     private final DiaryMapper diaryMapper;
 
@@ -48,11 +51,10 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public DiariesSearchByKeyword searchDiariesByKeyword(Long userId, int page, int size, String keyword) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        System.out.println(keyword);
-        System.out.println("userId = " + userId);
-        Slice<Diary> diariesSearchByKeyword = diaryRepository.searchDiariesByKeyword(userId, pageRequest, keyword);
+    public SearchDiariesRes searchDiariesByKeyword(UserDetail userDetail, PageRequest pageRequest, String diaryDate, String keyword) {
+        Long userId = userDetail.getUserId();
+        LocalDate monthDate = LocalDate.parse(diaryDate + FIRST_DAY);
+        Slice<Diary> diariesSearchByKeyword = diaryRepository.searchDiariesByKeyword(userId, pageRequest, monthDate, keyword);
         return diaryMapper.toDiarySlice(diariesSearchByKeyword);
     }
 }

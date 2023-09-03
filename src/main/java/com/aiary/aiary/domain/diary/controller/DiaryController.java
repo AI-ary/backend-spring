@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,10 +56,12 @@ public class DiaryController {
     public ResponseEntity<ResultResponse> searchDiariesByKeyWord(@AuthenticationPrincipal UserDetail user,
                                                                  @RequestParam(defaultValue = "0") int page,
                                                                  @RequestParam(defaultValue = "10")int size,
+                                                                 @RequestParam("diary_date") String diaryDate,
                                                                  @RequestParam String keyword){
+        PageRequest pageRequest = PageRequest.of(page, size);
         return ResponseEntity.ok(ResultResponse
                 .of(ResultCode.DIARY_READ_SUCCESS,
-                        diaryService.searchDiariesByKeyword(user.getUserId(), page, size, keyword)));
+                        diaryService.searchDiariesByKeyword(user, pageRequest, diaryDate, keyword)));
 
     }
 }
