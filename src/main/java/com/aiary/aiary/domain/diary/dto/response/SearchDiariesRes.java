@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class DiariesSearchByKeyword {
+public class SearchDiariesRes {
 
     private List<DiaryInfo> diaryInfos;
     private int curPageNumber;
