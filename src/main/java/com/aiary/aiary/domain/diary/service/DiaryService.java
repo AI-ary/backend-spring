@@ -15,7 +15,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -27,8 +26,8 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final DiaryMapper diaryMapper;
 
-    public void createDiary(User user, DiaryCreateRequest diaryCreateRequest){
-        Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateRequest, user);
+    public void createDiary(User user, DiaryCreateRequest diaryCreateRequest, String drawingUrl) {
+        Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateRequest, user, drawingUrl);
         diaryRepository.save(newDiary);
     }
   
