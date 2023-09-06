@@ -36,7 +36,7 @@ public class DiaryController {
     public ResponseEntity<ResultResponse> createDiary(@AuthenticationPrincipal UserDetail user,
                                                       @RequestPart("file") MultipartFile multipartFile,
                                                       @Valid @RequestPart(value="createRequest") DiaryCreateRequest createRequest) throws IOException {
-        String drawingUrl = s3UploadService.saveFile(multipartFile);
+        String drawingUrl = s3UploadService.saveFile(multipartFile, user.getUsername());
         diaryService.createDiary(user.getUser(), createRequest, drawingUrl);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_CREATE_SUCCESS));
     }

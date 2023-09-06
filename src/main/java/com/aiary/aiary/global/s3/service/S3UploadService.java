@@ -17,14 +17,15 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String saveFile(MultipartFile multipartFile) throws IOException {
+    public String saveFile(MultipartFile multipartFile, String username) throws IOException {
         // 메타데이터 설정
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
-        // 실제 S3 bucket 디렉토리명 설정
-        String fileName = "image/" + UUID.randomUUID() + "." + multipartFile.getOriginalFilename();
+        String directoryPath = "images/result/" + username + "/";
+        String fileName = directoryPath + UUID.randomUUID() + "." + multipartFile.getOriginalFilename();
+
         amazonS3Client.putObject(bucket, fileName, multipartFile.getInputStream(), metadata);
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
