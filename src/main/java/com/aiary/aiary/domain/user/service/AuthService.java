@@ -26,13 +26,14 @@ public class AuthService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisTemplate<String, Object> redisTemplate;
     private final UserValidator userValidator;
+    private final UserService userService;
 
     public JwtToken login(UserLoginReq userLoginReq) {
         User user = userValidator.loginUser(userLoginReq);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userLoginReq.getEmail(), userLoginReq.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        JwtToken jwt = jwtTokenProvider.generateToken(authentication);
+        JwtToken jwt = jwtTokenProvider.generateToken(authentication, user);
 
         //redis 에 email 을 key 로 저장, refresh 토큰을 value 값으로 저장
         redisTemplate.opsForValue().set("RT:" + user.getEmail(), jwt.getRefreshToken(), jwt.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
@@ -78,8 +79,10 @@ public class AuthService {
             throw new UnAuthorizedAccessException();
         }
 
+        User user = userService.findUserByEmail(authentication.getName());
+
         // 새로운 토큰 생성
-        JwtToken newJwt = jwtTokenProvider.generateToken(authentication);
+        JwtToken newJwt = jwtTokenProvider.generateToken(authentication, user);
 
         // RefreshToken Redis 업데이트
         redisTemplate.opsForValue()
