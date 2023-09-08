@@ -4,6 +4,7 @@ import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
 import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
 import com.aiary.aiary.domain.user.dto.request.UserThemeReq;
 import com.aiary.aiary.domain.user.dto.request.UserTokenReq;
+import com.aiary.aiary.domain.user.dto.response.UserProfileRes;
 import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.service.AuthService;
 import com.aiary.aiary.domain.user.service.UserService;
@@ -81,6 +82,13 @@ public class UserController {
                                                       @RequestBody @Valid UserThemeReq userThemeReq){
         userService.updateTheme(user.getUser(), userThemeReq);
         return ResponseEntity.ok(ResultResponse.of(USER_UPDATE_THEME_SUCCESS));
+    }
+
+    @Operation(summary = "사용자 프로필 조회")
+    @GetMapping("/profile")
+    public ResponseEntity<ResultResponse> findUserProfile(@AuthenticationPrincipal UserDetail user){
+        UserProfileRes userProfile = userService.findUserProfile(user.getUser());
+        return ResponseEntity.ok(ResultResponse.of(USER_PROFILE_SUCCESS, userProfile));
     }
 
 }
