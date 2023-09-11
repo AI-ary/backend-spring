@@ -20,6 +20,10 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    public boolean isDuplicatedNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
     public void register(UserJoinReq userJoinReq) {
         User user = userMapper.toEntity(userJoinReq);
         user.setEncryptedPassword(passwordEncoder);

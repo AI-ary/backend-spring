@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<ResultResponse> signup(
             @RequestBody @Valid UserJoinReq userJoinReq) {
-        userValidator.isDuplicatedEmail(userJoinReq);
+        userValidator.isDuplicatedUser(userJoinReq);
         userService.register(userJoinReq);
         return ResponseEntity.ok(ResultResponse.of(USER_REGISTRATION_SUCCESS));
     }
