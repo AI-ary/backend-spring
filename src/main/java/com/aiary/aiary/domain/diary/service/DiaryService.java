@@ -2,6 +2,7 @@ package com.aiary.aiary.domain.diary.service;
 
 import com.aiary.aiary.domain.diary.dto.mapper.DiaryMapper;
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
+import com.aiary.aiary.domain.diary.dto.request.DiaryUpdateRequest;
 import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryInfo;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
@@ -53,4 +54,9 @@ public class DiaryService {
         return diaryRepository.findById(diaryId).orElseThrow(DiaryNotFoundException::new);
     }
 
+    @Transactional
+    public void updateDiary(DiaryUpdateRequest diaryUpdateRequest, Long diaryId, String drawingUrl){
+        Diary updateDiary = diaryRepository.findById(diaryId).orElseThrow(DiaryNotFoundException::new);
+        updateDiary.updateDiary(diaryUpdateRequest, drawingUrl);
+    }
 }

@@ -1,5 +1,6 @@
 package com.aiary.aiary.domain.diary.entity;
 
+import com.aiary.aiary.domain.diary.dto.request.DiaryUpdateRequest;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.global.entity.BaseEntity;
 import lombok.*;
@@ -51,5 +52,13 @@ public class Diary extends BaseEntity {
         this.contents = contents;
         this.diaryDate = diaryDate;
         this.user = user;
+    }
+
+    public void updateDiary(DiaryUpdateRequest request, String drawingUrl) {
+        this.title = request.getTitle();
+        this.weather = Weather.valueOf(request.getWeather());
+        this.emoji = request.getEmoji();
+        this.drawingUrl = drawingUrl;
+        this.contents = request.getContents();
     }
 }

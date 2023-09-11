@@ -18,7 +18,7 @@ public enum ResultCode {
   DIARY_CREATE_SUCCESS("D001", "그림일기 등록 성공"),
   DIARY_DELETE_SUCCESS("D002", "그림일기 삭제 성공"),
   DIARY_READ_SUCCESS("D003", "그림일기 조회 성공"),
-  
+  DIARY_UPDATE_SUCCESS("D004", "그림일기 수정 성공"),
 
   // S3
   S3_UPLOAD_SUCCESS("S001", "S3 업로드 성공");

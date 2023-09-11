@@ -2,6 +2,7 @@ package com.aiary.aiary.domain.diary.controller;
 
 
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
+import com.aiary.aiary.domain.diary.dto.request.DiaryUpdateRequest;
 import com.aiary.aiary.domain.diary.service.DiaryService;
 import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.global.result.ResultCode;
@@ -55,5 +56,16 @@ public class DiaryController {
                                                            @DateTimeFormat(pattern = "yyyy-MM") Date diaryDate){
         return ResponseEntity.ok(ResultResponse
                 .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(user.getUser().getId(), diaryDate)));
+    }
+
+    @Operation(summary = "일기 수정")
+    @PutMapping("/{diaryId}")
+    public ResponseEntity<ResultResponse> updateDiary(@AuthenticationPrincipal UserDetail user,
+                                                      @RequestPart("file") MultipartFile multipartFile,
+                                                      @PathVariable Long diaryId,
+                                                      @Valid @RequestPart(value="updateRequest") DiaryUpdateRequest updateRequest) throws IOException {
+        String drawingUrl = s3UploadService.saveFile(multipartFile, user.getUsername());
+        diaryService.updateDiary(updateRequest, diaryId, drawingUrl);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_UPDATE_SUCCESS));
     }
 }
