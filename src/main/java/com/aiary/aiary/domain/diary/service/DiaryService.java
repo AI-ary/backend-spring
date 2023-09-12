@@ -3,6 +3,7 @@ package com.aiary.aiary.domain.diary.service;
 import com.aiary.aiary.domain.diary.dto.mapper.DiaryMapper;
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateReq;
 import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryRes;
+import com.aiary.aiary.domain.diary.dto.response.SearchDiariesRes;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
 import com.aiary.aiary.domain.diary.repository.DiaryRepository;
@@ -12,6 +13,8 @@ import com.aiary.aiary.domain.user.exception.UnAuthorizedAccessException;
 import com.aiary.aiary.domain.user.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +31,8 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final DiaryMapper diaryMapper;
 
-    public void createDiary(UserDetail userDetail, DiaryCreateReq diaryCreateReq){
-        Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateReq, userDetail.getUser());
+    public void createDiary(UserDetail userDetail, DiaryCreateReq diaryCreateReq, String drawingUrl){
+        Diary newDiary = diaryMapper.toCreateRequestDTO(diaryCreateReq, userDetail.getUser(), drawingUrl);
         diaryRepository.save(newDiary);
     }
   
@@ -57,4 +60,11 @@ public class DiaryService {
         return diaryRepository.findDiaryWithUser(diaryId).orElseThrow(DiaryNotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
+    public SearchDiariesRes searchDiariesByKeyword(UserDetail userDetail, PageRequest pageRequest, String diaryDate, String keyword) {
+        Long userId = userDetail.getUserId();
+        LocalDate monthDate = LocalDate.parse(diaryDate + FIRST_DAY);
+        Slice<Diary> diariesSearchByKeyword = diaryRepository.searchDiariesByKeyword(userId, pageRequest, monthDate, keyword);
+        return diaryMapper.toDiarySlice(diariesSearchByKeyword);
+    }
 }

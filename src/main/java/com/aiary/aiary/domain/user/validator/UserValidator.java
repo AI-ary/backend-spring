@@ -4,9 +4,11 @@ import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
 import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.exception.InValidPasswordException;
+import com.aiary.aiary.domain.user.exception.NicknameDuplicatedException;
 import com.aiary.aiary.domain.user.exception.UserDuplicatedException;
 import com.aiary.aiary.domain.user.exception.UserNotFoundException;
 import com.aiary.aiary.domain.user.repository.UserRepository;
+import com.aiary.aiary.domain.user.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,11 +18,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserValidator {
     private final UserRepository userRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    public void isDuplicatedEmail (UserJoinReq request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+    public void isDuplicatedUser (UserJoinReq request) {
+        if (userService.isDuplicatedEmail(request.getEmail())) {
             throw new UserDuplicatedException();
+        }
+        if (userService.isDuplicatedNickname(request.getNickname())) {
+            throw new NicknameDuplicatedException();
         }
     }
 

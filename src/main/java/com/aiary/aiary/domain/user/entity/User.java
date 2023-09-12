@@ -32,8 +32,9 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 250)
     private String password;
 
-    @Column(length = 500)
-    private String thema;   // 테마 (변경될 수 있음)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Theme theme;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -51,7 +52,7 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.password = password;
         this.role = role;
-        this.thema = "";
+        this.theme = Theme.ORIGINAL;
     }
 
     public void inActive() {
@@ -60,6 +61,10 @@ public class User extends BaseEntity {
 
     public void setEncryptedPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);
+    }
+
+    public void updateTheme(String theme){
+        this.theme = Theme.valueOf(theme);
     }
 
 }

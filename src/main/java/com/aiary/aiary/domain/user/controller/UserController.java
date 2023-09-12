@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<ResultResponse> signup(
             @RequestBody @Valid UserJoinReq userJoinReq) {
-        userValidator.isDuplicatedEmail(userJoinReq);
+        userValidator.isDuplicatedUser(userJoinReq);
         userService.register(userJoinReq);
         return ResponseEntity.ok(ResultResponse.of(USER_REGISTRATION_SUCCESS));
     }
@@ -71,4 +71,20 @@ public class UserController {
         JwtToken newToken = authService.reissue(userTokenReq);
         return ResponseEntity.ok(ResultResponse.of(USER_REISSUE_SUCCESS, newToken));
     }
+
+    @Operation(summary = "테마 변경")
+    @PostMapping("/theme")
+    public ResponseEntity<ResultResponse> updateTheme(@AuthenticationPrincipal UserDetail user,
+                                                      @RequestBody @Valid UserThemeReq userThemeReq){
+        userService.updateTheme(user.getUser(), userThemeReq);
+        return ResponseEntity.ok(ResultResponse.of(USER_UPDATE_THEME_SUCCESS));
+    }
+
+    @Operation(summary = "사용자 프로필 조회")
+    @GetMapping("/profile")
+    public ResponseEntity<ResultResponse> findUserProfile(@AuthenticationPrincipal UserDetail user){
+        UserProfileRes userProfile = userService.findUserProfile(user.getUser());
+        return ResponseEntity.ok(ResultResponse.of(USER_PROFILE_SUCCESS, userProfile));
+    }
+
 }
