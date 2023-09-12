@@ -4,6 +4,7 @@ import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.exception.UserNotFoundException;
 import com.aiary.aiary.domain.user.repository.UserRepository;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;

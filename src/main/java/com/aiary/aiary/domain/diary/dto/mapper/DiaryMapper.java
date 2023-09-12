@@ -1,9 +1,10 @@
 package com.aiary.aiary.domain.diary.dto.mapper;
 
-import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
+
+import com.aiary.aiary.domain.diary.dto.request.DiaryCreateReq;
+import com.aiary.aiary.domain.diary.dto.response.DiaryRes;
+import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryRes;
 import com.aiary.aiary.domain.diary.dto.response.SearchDiariesRes;
-import com.aiary.aiary.domain.diary.dto.response.DiaryInfo;
-import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryInfo;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.entity.Weather;
 import com.aiary.aiary.domain.user.entity.User;
@@ -16,20 +17,21 @@ import java.util.stream.Collectors;
 @Component
 public class DiaryMapper {
 
-    public Diary toCreateRequestDTO(DiaryCreateRequest diaryCreateRequest, User user, String drawingUrl){
+    public Diary toCreateRequestDTO(DiaryCreateReq diaryCreateReq, User user, String drawingUrl){
         return Diary.builder()
-                .title(diaryCreateRequest.getTitle())
-                .contents(diaryCreateRequest.getContents())
-                .weather(Weather.valueOf(diaryCreateRequest.getWeather()))
-                .emoji(diaryCreateRequest.getEmoji())
+                .title(diaryCreateReq.getTitle())
+                .contents(diaryCreateReq.getContents())
+                .weather(Weather.valueOf(diaryCreateReq.getWeather()))
+                .emoji(diaryCreateReq.getEmoji())
                 .drawingUrl(drawingUrl)
-                .diaryDate(diaryCreateRequest.getDiaryDate())
+                .diaryDate(diaryCreateReq.getDiaryDate())
                 .user(user)
                 .build();
     }
 
-    public DiaryInfo toEntity(Diary diary){
-        return DiaryInfo.builder()
+    public DiaryRes toEntity(Diary diary){
+        return DiaryRes.builder()
+                .diaryId(diary.getId())
                 .title(diary.getTitle())
                 .weather(diary.getWeather())
                 .emoji(diary.getEmoji())
@@ -39,15 +41,15 @@ public class DiaryMapper {
                 .build();
     }
 
-    public MonthlyDiaryInfo toMonthlyDiaryList(List<Diary> monthlyDiaries){
-        List<DiaryInfo> diaryInfos = monthlyDiaries.stream()
+    public MonthlyDiaryRes toMonthlyDiaryList(List<Diary> monthlyDiaries){
+        List<DiaryRes> diaryRes = monthlyDiaries.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
-        return MonthlyDiaryInfo.builder().monthlyDiaryInfo(diaryInfos).build();
+        return MonthlyDiaryRes.builder().monthlyDiaryRes(diaryRes).build();
     }
 
     public SearchDiariesRes toDiarySlice(Slice<Diary> diaries){
-        List<DiaryInfo> diaryInfos = diaries.stream()
+        List<DiaryRes> diaryInfos = diaries.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
 

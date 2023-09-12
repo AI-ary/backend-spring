@@ -57,5 +57,4 @@ public class UserDetail implements UserDetails {
     public Long getUserId(){
         return user.getId();
     }
-
 }

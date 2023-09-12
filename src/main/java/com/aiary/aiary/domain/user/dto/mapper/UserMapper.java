@@ -1,4 +1,4 @@
-package com.aiary.aiary.domain.user.mapper;
+package com.aiary.aiary.domain.user.dto.mapper;
 
 import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
 import com.aiary.aiary.domain.user.dto.response.UserProfileRes;

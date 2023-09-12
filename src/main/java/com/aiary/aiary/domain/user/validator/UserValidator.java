@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserValidator {
+    private final UserRepository userRepository;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
 
     public void isDuplicatedUser (UserJoinReq request) {
         if (userService.isDuplicatedEmail(request.getEmail())) {

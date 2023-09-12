@@ -25,8 +25,8 @@ import static com.aiary.aiary.global.result.ResultCode.*;
 
 @Tag(name = "User", description = "사용자 API")
 @RestController
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@RequestMapping("/api/users")
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
     private final AuthService authService;
@@ -41,19 +41,6 @@ public class UserController {
         userService.register(userJoinReq);
         return ResponseEntity.ok(ResultResponse.of(USER_REGISTRATION_SUCCESS));
     }
-
-
-//    @Operation(summary = "이메일 중복확인")
-//    @GetMapping("/duplicated/{email}")
-//    public ResponseEntity<ResultResponse> checkEmail(@PathVariable String email) {
-//        boolean isDuplicated = userService.isDuplicatedEmail(email);
-//
-//        if (isDuplicated) {
-//            return ResponseEntity.ok(ResultResponse.of(ResultCode.USER_EMAIL_DUPLICATED, true));
-//        }
-//        return ResponseEntity.ok(ResultResponse.of(USER_EMAIL_NOT_DUPLICATED, false));
-//    }
-
 
     @Operation(summary = "로그인")
     @PostMapping("/login")

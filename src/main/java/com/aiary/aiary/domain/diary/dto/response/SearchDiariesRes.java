@@ -12,7 +12,7 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SearchDiariesRes {
 
-    private List<DiaryInfo> diaryInfos;
+    private List<DiaryRes> diaryInfos;
     private int curPageNumber;
     private boolean hasNext;
     private boolean hasPrevious;
