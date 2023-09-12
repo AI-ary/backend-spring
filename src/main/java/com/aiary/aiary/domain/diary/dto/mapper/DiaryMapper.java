@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 @Component
 public class DiaryMapper {
 
-    public Diary toCreateRequestDTO(DiaryCreateRequest diaryCreateRequest, User user){
+    public Diary toCreateRequestDTO(DiaryCreateRequest diaryCreateRequest, User user, String drawingUrl){
         return Diary.builder()
                 .title(diaryCreateRequest.getTitle())
                 .contents(diaryCreateRequest.getContents())
                 .weather(Weather.valueOf(diaryCreateRequest.getWeather()))
                 .emoji(diaryCreateRequest.getEmoji())
-                .drawingUrl(diaryCreateRequest.getDrawingUrl())
+                .drawingUrl(drawingUrl)
                 .diaryDate(diaryCreateRequest.getDiaryDate())
                 .user(user)
                 .build();

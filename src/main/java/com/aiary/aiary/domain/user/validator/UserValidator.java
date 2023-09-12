@@ -4,6 +4,7 @@ import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
 import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.exception.InValidPasswordException;
+import com.aiary.aiary.domain.user.exception.NicknameDuplicatedException;
 import com.aiary.aiary.domain.user.exception.UserDuplicatedException;
 import com.aiary.aiary.domain.user.exception.UserNotFoundException;
 import com.aiary.aiary.domain.user.repository.UserRepository;
@@ -20,9 +21,12 @@ public class UserValidator {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public void isDuplicatedEmail (UserJoinReq request) {
+    public void isDuplicatedUser (UserJoinReq request) {
         if (userService.isDuplicatedEmail(request.getEmail())) {
             throw new UserDuplicatedException();
+        }
+        if (userService.isDuplicatedNickname(request.getNickname())) {
+            throw new NicknameDuplicatedException();
         }
     }
 

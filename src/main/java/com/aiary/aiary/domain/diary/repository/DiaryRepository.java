@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
@@ -22,6 +23,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
             "order by d.diaryDate desc")
     List<Diary> findMonthlyDiaryByUserId(@Param("userId") Long userId, @Param("diaryDate") Date diaryDate);
 
+
     @Query("SELECT d FROM Diary d JOIN d.user u " +
             "WHERE u.id = :userId " +
             "AND d.isDeleted = FALSE " +
@@ -31,4 +33,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
             "ORDER BY d.diaryDate DESC")
     Slice<Diary> searchDiariesByKeyword(@Param("userId") Long userId, Pageable pageable
             , @Param("monthDate") LocalDate monthDate, @Param("keyword") String keyword);
+
+    @Query(value = "SELECT d FROM Diary d JOIN FETCH d.user WHERE d.id = :diaryId AND d.isDeleted = false")
+    Optional<Diary> findDiaryWithUser(@Param("diaryId") Long diaryId);
 }
