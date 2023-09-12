@@ -2,7 +2,10 @@ package com.aiary.aiary.domain.user.controller;
 
 import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
 import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
+import com.aiary.aiary.domain.user.dto.request.UserThemeReq;
 import com.aiary.aiary.domain.user.dto.request.UserTokenReq;
+import com.aiary.aiary.domain.user.dto.response.UserProfileRes;
+import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.service.AuthService;
 import com.aiary.aiary.domain.user.service.UserService;
 import com.aiary.aiary.domain.user.validator.UserValidator;
@@ -13,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,19 +41,6 @@ public class UserController {
         userService.register(userJoinReq);
         return ResponseEntity.ok(ResultResponse.of(USER_REGISTRATION_SUCCESS));
     }
-
-
-//    @Operation(summary = "이메일 중복확인")
-//    @GetMapping("/duplicated/{email}")
-//    public ResponseEntity<ResultResponse> checkEmail(@PathVariable String email) {
-//        boolean isDuplicated = userService.isDuplicatedEmail(email);
-//
-//        if (isDuplicated) {
-//            return ResponseEntity.ok(ResultResponse.of(ResultCode.USER_EMAIL_DUPLICATED, true));
-//        }
-//        return ResponseEntity.ok(ResultResponse.of(USER_EMAIL_NOT_DUPLICATED, false));
-//    }
-
 
     @Operation(summary = "로그인")
     @PostMapping("/login")
