@@ -1,11 +1,13 @@
 package com.aiary.aiary.domain.diary.dto.mapper;
 
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateRequest;
+import com.aiary.aiary.domain.diary.dto.response.SearchDiariesRes;
 import com.aiary.aiary.domain.diary.dto.response.DiaryInfo;
 import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryInfo;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.entity.Weather;
 import com.aiary.aiary.domain.user.entity.User;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -42,6 +44,19 @@ public class DiaryMapper {
                 .map(this::toEntity)
                 .collect(Collectors.toList());
         return MonthlyDiaryInfo.builder().monthlyDiaryInfo(diaryInfos).build();
+    }
+
+    public SearchDiariesRes toDiarySlice(Slice<Diary> diaries){
+        List<DiaryInfo> diaryInfos = diaries.stream()
+                .map(this::toEntity)
+                .collect(Collectors.toList());
+
+        return SearchDiariesRes.builder()
+                .diaryInfos(diaryInfos)
+                .curPageNumber(diaries.getNumber())
+                .hasNext(diaries.hasNext())
+                .hasPrevious(diaries.hasPrevious())
+                .build();
     }
 
 

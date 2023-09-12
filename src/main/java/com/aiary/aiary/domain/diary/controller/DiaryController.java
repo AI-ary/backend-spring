@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -54,6 +55,20 @@ public class DiaryController {
                                                            @RequestParam("diary_date")
                                                            @DateTimeFormat(pattern = "yyyy-MM") Date diaryDate){
         return ResponseEntity.ok(ResultResponse
-                .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(user.getUser().getId(), diaryDate)));
+                .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiary(user.getUserId(), diaryDate)));
+    }
+
+    @Operation(summary = "일기 제목/내용 검색")
+    @GetMapping("/search")
+    public ResponseEntity<ResultResponse> searchDiariesByKeyWord(@AuthenticationPrincipal UserDetail user,
+                                                                 @RequestParam(defaultValue = "0", required = false) int page,
+                                                                 @RequestParam(defaultValue = "10", required = false)int size,
+                                                                 @RequestParam("diary_date") String diaryDate,
+                                                                 @RequestParam String keyword){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.ok(ResultResponse
+                .of(ResultCode.DIARY_READ_SUCCESS,
+                        diaryService.searchDiariesByKeyword(user, pageRequest, diaryDate, keyword)));
+
     }
 }
