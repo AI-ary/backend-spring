@@ -17,7 +17,7 @@ public class UserMapper {
                 .build();
     }
 
-    public UserProfileRes toEntity(User user){
+    public UserProfileRes toUserProfile(User user){
         return UserProfileRes.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())

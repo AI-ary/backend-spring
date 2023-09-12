@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public UserProfileRes findUserProfile(User user) {
-        return userMapper.toEntity(user);
+        return userMapper.toUserProfile(user);
     }
 
     public User findUserById(long id) {
