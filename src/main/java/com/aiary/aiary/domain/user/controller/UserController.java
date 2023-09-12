@@ -2,7 +2,10 @@ package com.aiary.aiary.domain.user.controller;
 
 import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
 import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
+import com.aiary.aiary.domain.user.dto.request.UserThemeReq;
 import com.aiary.aiary.domain.user.dto.request.UserTokenReq;
+import com.aiary.aiary.domain.user.dto.response.UserProfileRes;
+import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.service.AuthService;
 import com.aiary.aiary.domain.user.service.UserService;
 import com.aiary.aiary.domain.user.validator.UserValidator;
@@ -13,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -71,4 +75,20 @@ public class UserController {
         JwtToken newToken = authService.reissue(userTokenReq);
         return ResponseEntity.ok(ResultResponse.of(USER_REISSUE_SUCCESS, newToken));
     }
+
+    @Operation(summary = "테마 변경")
+    @PostMapping("/theme")
+    public ResponseEntity<ResultResponse> updateTheme(@AuthenticationPrincipal UserDetail user,
+                                                      @RequestBody @Valid UserThemeReq userThemeReq){
+        userService.updateTheme(user.getUser(), userThemeReq);
+        return ResponseEntity.ok(ResultResponse.of(USER_UPDATE_THEME_SUCCESS));
+    }
+
+    @Operation(summary = "사용자 프로필 조회")
+    @GetMapping("/profile")
+    public ResponseEntity<ResultResponse> findUserProfile(@AuthenticationPrincipal UserDetail user){
+        UserProfileRes userProfile = userService.findUserProfile(user.getUser());
+        return ResponseEntity.ok(ResultResponse.of(USER_PROFILE_SUCCESS, userProfile));
+    }
+
 }
