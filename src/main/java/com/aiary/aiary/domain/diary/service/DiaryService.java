@@ -51,8 +51,8 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public SearchDiariesRes searchDiariesByKeyword(UserDetail user, PageRequest pageRequest, String diaryDate, String keyword) {
-        Long userId = user.getUserId();
+    public SearchDiariesRes searchDiariesByKeyword(UserDetail userDetail, PageRequest pageRequest, String diaryDate, String keyword) {
+        Long userId = userDetail.getUserId();
         LocalDate monthDate = LocalDate.parse(diaryDate + FIRST_DAY);
         Slice<Diary> diariesSearchByKeyword = diaryRepository.searchDiariesByKeyword(userId, pageRequest, monthDate, keyword);
         return diaryMapper.toDiarySlice(diariesSearchByKeyword);
