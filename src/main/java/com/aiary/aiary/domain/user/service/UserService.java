@@ -38,6 +38,11 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void updateProfileImage(User user, String ProfileImage){
+        user.updateProfileImage(ProfileImage);
+        userRepository.save(user);
+    }
+
     public UserProfileRes findUserProfile(User user) {
         return userMapper.toUserProfile(user);
     }
