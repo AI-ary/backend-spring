@@ -8,7 +8,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class DiaryCreateReq {
 
