@@ -8,17 +8,27 @@ import java.time.LocalDate;
 
 public class DiaryFixture {
 
-    public static final Diary TEST_DIARY = Diary.builder()
+    public static final Diary CREATE_DIARY = Diary.builder()
             .title("일기 제목")
             .weather(Weather.SUNNY)
             .emoji("\uD83D\uDCAA")
             .contents("일기 내용")
             .drawingUrl("url")
             .diaryDate(LocalDate.of(2023,9,19))
-            .user(UserFixture.TEST_USER)
+            .user(UserFixture.DIARY_CREATE_USER)
             .build();
 
-    public static final DiaryCreateReq TEST_DIARY_CREATE_REQ = DiaryCreateReq.builder()
+    public static final Diary DELETE_DIARY = Diary.builder()
+            .title("일기 제목")
+            .weather(Weather.SUNNY)
+            .emoji("\uD83D\uDCAA")
+            .contents("일기 내용")
+            .drawingUrl("url")
+            .diaryDate(LocalDate.of(2023,9,20))
+            .user(UserFixture.DIARY_DELETE_USER)
+            .build();
+
+    public static final DiaryCreateReq DIARY_CREATE_REQ = DiaryCreateReq.builder()
             .title("일기 제목")
             .weather("SUNNY")
             .emoji("\uD83D\uDCAA")
