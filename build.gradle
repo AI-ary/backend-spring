@@ -30,6 +30,17 @@ jacocoTestReport {
 		html.required = true
 	}
 	finalizedBy jacocoTestCoverageVerification
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					'**/dto/**',
+					"**/*Application*",
+					"**/global/**",
+					"**/config/**",
+					"**/exceptions/**"
+			])
+		}))
+	}
 }
 
 // Jacoco 코드 커버리지 검증 설정
@@ -50,7 +61,6 @@ jacocoTestCoverageVerification {
 				value = 'COVEREDRATIO'
 				minimum = 0.00
 			}
-			excludes = ["*.dto.*", "*.global.*", "*.AiaryApplication*", "*.config.*", "*.exceptions.*"]
 		}
 	}
 }
