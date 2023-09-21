@@ -61,7 +61,7 @@ public class DiaryController {
     @GetMapping("/search")
     public ResponseEntity<ResultResponse> searchDiariesByKeyWord(@AuthenticationPrincipal UserDetail user,
                                                                  @RequestParam(defaultValue = "0", required = false) int page,
-                                                                 @RequestParam(defaultValue = "10", required = false)int size,
+                                                                 @RequestParam(defaultValue = "40", required = false)int size,
                                                                  @RequestParam("diary_date") String diaryDate,
                                                                  @RequestParam String keyword){
         PageRequest pageRequest = PageRequest.of(page, size);
