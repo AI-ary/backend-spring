@@ -1,6 +1,8 @@
 package com.aiary.aiary.domain.diary.service;
 
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateReq;
+import com.aiary.aiary.domain.diary.dto.response.DiaryRes;
+import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryRes;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
 import com.aiary.aiary.domain.diary.repository.DiaryRepository;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.assertj.core.api.Assertions.*;
@@ -68,7 +72,23 @@ class DiaryServiceTest {
                 () ->  assertThatThrownBy(() -> diaryService.findDiaryWithUser(expect.getId()))
                         .isInstanceOf(DiaryNotFoundException.class)
         );
-
-
     }
+
+    @Test
+    @DisplayName("일기들을 달 별로 조회할 수 있다.")
+    void findMonthlyDiaryByDate(){
+        //given
+        userRepository.save(UserFixture.DIARY_FIND_MONTH_USER);
+        diaryRepository.saveAll(DiaryFixture.InsertDiaries());
+
+        //when
+        MonthlyDiaryRes monthlyDiaryRes = diaryService.findMonthlyDiaryByDate(UserFixture.DIARY_FIND_MONTH_USERDETAIL, "2023-09");
+        List<DiaryRes> diaryRes = monthlyDiaryRes.getMonthlyDiaryRes();
+
+        //then
+        assertThat(diaryRes.size()).isEqualTo(2);
+        assertThat(diaryRes.get(0).getTitle()).isEqualTo("일기 제목2");
+        assertThat(diaryRes.get(1).getTitle()).isEqualTo("일기 제목1");
+    }
+
 }
