@@ -38,7 +38,7 @@ public class DiaryFixture {
             .diaryDate(LocalDate.of(2023,9,19))
             .build();
 
-    public static List<Diary> InsertDiaries() {
+    public static List<Diary> INSERT_FIND_DIARIES() {
         List<Diary> diaries = new ArrayList<>();
         Diary diary1 = Diary.builder()
                 .title("일기 제목1")
@@ -58,6 +58,34 @@ public class DiaryFixture {
                 .drawingUrl("url1")
                 .diaryDate(LocalDate.of(2023,9,22))
                 .user(UserFixture.DIARY_FIND_MONTH_USER)
+                .build();
+
+        diaries.add(diary1);
+        diaries.add(diary2);
+
+        return diaries;
+    }
+
+    public static List<Diary> INSERT_SEARCH_DIARIES() {
+        List<Diary> diaries = new ArrayList<>();
+        Diary diary1 = Diary.builder()
+                .title("일기 제목1")
+                .weather(Weather.SUNNY)
+                .emoji("\uD83D\uDCAA")
+                .contents("일기 내용1")
+                .drawingUrl("url1")
+                .diaryDate(LocalDate.of(2023,9,21))
+                .user(UserFixture.DIARY_SEARCH_USER)
+                .build();
+
+        Diary diary2 = Diary.builder()
+                .title("일기 제목2")
+                .weather(Weather.SUNNY)
+                .emoji("\uD83D\uDCAA")
+                .contents("일기 내용2")
+                .drawingUrl("url1")
+                .diaryDate(LocalDate.of(2023,9,22))
+                .user(UserFixture.DIARY_SEARCH_USER)
                 .build();
 
         diaries.add(diary1);
