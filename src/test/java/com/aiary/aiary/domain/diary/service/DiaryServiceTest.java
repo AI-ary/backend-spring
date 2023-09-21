@@ -3,6 +3,7 @@ package com.aiary.aiary.domain.diary.service;
 import com.aiary.aiary.domain.diary.dto.request.DiaryCreateReq;
 import com.aiary.aiary.domain.diary.dto.response.DiaryRes;
 import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryRes;
+import com.aiary.aiary.domain.diary.dto.response.SearchDiariesRes;
 import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
 import com.aiary.aiary.domain.diary.repository.DiaryRepository;
@@ -11,9 +12,9 @@ import com.aiary.aiary.domain.user.repository.UserRepository;
 import com.aiary.aiary.support.database.DatabaseTest;
 import com.aiary.aiary.support.fixture.DiaryFixture;
 import com.aiary.aiary.support.fixture.UserFixture;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
 
 import java.util.List;
@@ -79,7 +80,7 @@ class DiaryServiceTest {
     void findMonthlyDiaryByDate(){
         //given
         userRepository.save(UserFixture.DIARY_FIND_MONTH_USER);
-        diaryRepository.saveAll(DiaryFixture.InsertDiaries());
+        diaryRepository.saveAll(DiaryFixture.INSERT_FIND_DIARIES());
 
         //when
         MonthlyDiaryRes monthlyDiaryRes = diaryService.findMonthlyDiaryByDate(UserFixture.DIARY_FIND_MONTH_USERDETAIL, "2023-09");
@@ -89,6 +90,25 @@ class DiaryServiceTest {
         assertThat(diaryRes.size()).isEqualTo(2);
         assertThat(diaryRes.get(0).getTitle()).isEqualTo("일기 제목2");
         assertThat(diaryRes.get(1).getTitle()).isEqualTo("일기 제목1");
+    }
+
+    @Test
+    @DisplayName("키워드로 제목,내용을 포함한 일기들을 검색할 수 있다.")
+    void searchDiariesByDate(){
+        //given
+        userRepository.save(UserFixture.DIARY_SEARCH_USER);
+        diaryRepository.saveAll(DiaryFixture.INSERT_SEARCH_DIARIES());
+        PageRequest pageRequest = PageRequest.of(0, 40);
+
+        //when
+        SearchDiariesRes searchDiariesRes = diaryService.searchDiariesByKeyword(UserFixture.DIARY_SEARCH_USERDETAIL
+                , pageRequest, "2023-09", "내용");
+        List<DiaryRes> diaryRes = searchDiariesRes.getDiaryRes();
+
+        //then
+        assertThat(diaryRes.size()).isEqualTo(2);
+        assertThat(diaryRes.get(0).getContents()).isEqualTo("일기 내용2");
+        assertThat(diaryRes.get(1).getContents()).isEqualTo("일기 내용1");
     }
 
 }
