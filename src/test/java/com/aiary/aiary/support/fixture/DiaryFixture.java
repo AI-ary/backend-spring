@@ -30,6 +30,16 @@ public class DiaryFixture {
             .user(UserFixture.DIARY_DELETE_USER)
             .build();
 
+    public static final Diary DELETE_UNAUTHOR_DIARY = Diary.builder()
+            .title("일기 제목")
+            .weather(Weather.SUNNY)
+            .emoji("\uD83D\uDCAA")
+            .contents("일기 내용")
+            .drawingUrl("url")
+            .diaryDate(LocalDate.of(2023,9,20))
+            .user(UserFixture.DIARY_DELETE_USER)
+            .build();
+
     public static final DiaryCreateReq DIARY_CREATE_REQ = DiaryCreateReq.builder()
             .title("일기 제목")
             .weather("SUNNY")

@@ -28,6 +28,17 @@ public class UserFixture {
             .user(DIARY_DELETE_USER)
             .build();
 
+    public static final User DIARY_DELETE_UNAUTHOR_USER = User.builder()
+            .email("Unauthor@gmail.com")
+            .password("Test012@")
+            .nickname("테스트유저")
+            .role(Role.USER)
+            .build();
+
+    public static final UserDetail DIAEY_DELETE_UNAUTHOR_USERDETAIL = UserDetail.builder()
+            .user(DIARY_DELETE_UNAUTHOR_USER)
+            .build();
+
     public static final User DIARY_FIND_MONTH_USER = User.builder()
             .email("Find@gmail.com")
             .password("Test012@")

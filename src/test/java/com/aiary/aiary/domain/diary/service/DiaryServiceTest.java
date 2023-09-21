@@ -8,6 +8,7 @@ import com.aiary.aiary.domain.diary.entity.Diary;
 import com.aiary.aiary.domain.diary.exception.DiaryNotFoundException;
 import com.aiary.aiary.domain.diary.repository.DiaryRepository;
 import com.aiary.aiary.domain.user.entity.UserDetail;
+import com.aiary.aiary.domain.user.exception.UnAuthorizedAccessException;
 import com.aiary.aiary.domain.user.repository.UserRepository;
 import com.aiary.aiary.support.database.DatabaseTest;
 import com.aiary.aiary.support.fixture.DiaryFixture;
@@ -58,20 +59,25 @@ class DiaryServiceTest {
     }
 
     @Test
-    @DisplayName("일기가 PK로 삭제가 되는지 확인한다.")
+    @DisplayName("사용자가 작성한 일기가 PK로 삭제가 되는지 확인한다.")
     void deleteDiary(){
         //given
         userRepository.save(UserFixture.DIARY_DELETE_USER);
-        Diary expect = diaryRepository.save(DiaryFixture.DELETE_DIARY);
+        userRepository.save(UserFixture.DIARY_DELETE_UNAUTHOR_USER);
+        Diary diary = diaryRepository.save(DiaryFixture.DELETE_DIARY);
+        Diary unAuthorDiary = diaryRepository.save(DiaryFixture.DELETE_UNAUTHOR_DIARY);
 
         //when
-        diaryService.deleteDiary(UserFixture.DIAEY_DELETE_USERDETAIL, expect.getId());
+        diaryService.deleteDiary(UserFixture.DIAEY_DELETE_USERDETAIL, diary.getId());
 
         //then
         assertAll(
-                () ->  assertThat(expect.isDeleted()).isTrue(),
-                () ->  assertThatThrownBy(() -> diaryService.findDiaryWithUser(expect.getId()))
-                        .isInstanceOf(DiaryNotFoundException.class)
+                () -> assertThat(diary.isDeleted()).isTrue(),
+                () -> assertThatThrownBy(() -> diaryService.findDiaryWithUser(diary.getId()))
+                        .isInstanceOf(DiaryNotFoundException.class),
+                () -> assertThatThrownBy(() -> diaryService.deleteDiary(UserFixture.DIAEY_DELETE_UNAUTHOR_USERDETAIL, unAuthorDiary.getId()))
+                        .isInstanceOf(UnAuthorizedAccessException.class)
+                        .hasMessageContaining("권한이 없는 사용자")
         );
     }
 
