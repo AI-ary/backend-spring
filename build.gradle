@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'jacoco'
 	id 'org.springframework.boot' version '2.7.14-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
@@ -10,6 +11,48 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '11'
+}
+
+jacoco {
+	toolVersion = '0.8.5'
+}
+
+// 테스트 태스크에 Jacoco 통합
+test{
+	finalizedBy 'jacocoTestReport'
+}
+
+// 테스트 작업이 완료된 후 'jacocoTestReport' 작업을 실행하도록 설정
+jacocoTestReport {
+	reports {
+		xml.required = false
+		csv.required = false
+		html.required = true
+	}
+	finalizedBy jacocoTestCoverageVerification
+}
+
+// Jacoco 코드 커버리지 검증 설정
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			enabled = true
+			element = 'CLASS'
+
+			limit {
+				counter = 'METHOD'
+				value = 'COVEREDRATIO'
+				minimum = 0.00
+			}
+
+			limit {
+				counter = 'INSTRUCTION' // 조건, 반복문
+				value = 'COVEREDRATIO'
+				minimum = 0.00
+			}
+			excludes = ["*.dto.*", "*.global.*", "*.AiaryApplication*", "*.config.*", "*.exceptions.*"]
+		}
+	}
 }
 
 repositories {
@@ -49,6 +92,7 @@ tasks.named('test') {
 }
 
 // 변수 선언
+//  snippetsDir 변수는 생성된 스니펫 파일을 저장할 디렉토리를 지정합니다. 스니펫 파일은 API 엔드포인트에서 생성된 예제 요청 및 응답 정보를 포함합니다.
 ext {
 	snippetsDir = file('build/generated-snippets')
 }
