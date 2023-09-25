@@ -77,8 +77,8 @@ public class UserController {
     @PutMapping("/profile")
     public ResponseEntity<ResultResponse> updateProfile(@AuthenticationPrincipal UserDetail user,
                                                         @RequestPart("file") MultipartFile multipartFile) throws IOException {
-        if (user.getUser().getProfileImage() != null) { // 기존 이미지가 있었다면 S3 이미지 삭제
-            s3Service.deleteFile(user.getUser().getProfileImage());
+        if (user.existsByProfileImage()) { // 기존 이미지가 있었다면 S3 이미지 삭제
+            s3Service.deleteFile(user.getProfileImage());
         }
         String drawingUrl = s3Service.saveFile(multipartFile, "profile", user.getUsername());
         userService.updateProfileImage(user.getUser(), drawingUrl);
