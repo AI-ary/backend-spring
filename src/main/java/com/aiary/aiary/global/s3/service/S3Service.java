@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Service
@@ -41,10 +43,13 @@ public class S3Service {
     private String extractS3Key(String imageUrl) {
         try {
             // url 에 @ 대신 %40 으로 반환되어있지만, key 는 @ 로 되어있기 때문에 변환
-            String url = imageUrl.replace("%40", "@");
-            int splitIndex = url.indexOf(".com/");
+            imageUrl = imageUrl.replace("%40", "@");
+            // URL 디코딩을 수행
+            imageUrl = URLDecoder.decode(imageUrl, StandardCharsets.UTF_8);
+
+            int splitIndex = imageUrl.indexOf(".com/");
             if (splitIndex != -1) {
-                return url.substring(splitIndex + 5);  // ".com/" 다음 문자열부터가 객체 키
+                return imageUrl.substring(splitIndex + 5);  // ".com/" 다음 문자열부터가 객체 키
             }
         } catch (Exception e) {
             e.printStackTrace();
