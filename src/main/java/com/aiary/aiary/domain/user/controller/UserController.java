@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @Operation(summary = "테마 변경")
-    @PostMapping("/theme")
+    @PutMapping("/theme")
     public ResponseEntity<ResultResponse> updateTheme(@AuthenticationPrincipal UserDetail user,
                                                       @RequestBody @Valid UserThemeReq userThemeReq){
         userService.updateTheme(user.getUser(), userThemeReq);
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @Operation(summary = "프로필 변경")
-    @PostMapping("/profile")
+    @PutMapping("/profile")
     public ResponseEntity<ResultResponse> updateProfile(@AuthenticationPrincipal UserDetail user,
                                                         @RequestPart("file") MultipartFile multipartFile) throws IOException {
         if (user.getUser().getProfileImage() != null) { // 기존 이미지가 있었다면 S3 이미지 삭제
