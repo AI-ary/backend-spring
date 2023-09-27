@@ -3,7 +3,7 @@ package com.aiary.aiary.global.s3.controller;
 import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.global.result.ResultCode;
 import com.aiary.aiary.global.result.ResultResponse;
-import com.aiary.aiary.global.s3.service.S3UploadService;
+import com.aiary.aiary.global.s3.service.S3Service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,12 @@ import java.io.IOException;
 @RequestMapping("api/s3")
 public class S3Controller {
     private final AmazonS3Client amazonS3Client;
-    private final S3UploadService s3UploadService;
+    private final S3Service s3Service;
 
     @PostMapping("/upload")
     public ResponseEntity<ResultResponse> uploadFile(@AuthenticationPrincipal UserDetail user,
                                                      @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        String drawingUrl = s3UploadService.saveFile(multipartFile, user.getUsername());
+        String drawingUrl = s3Service.saveFile(multipartFile, "etc", user.getUsername());
 
         return ResponseEntity.ok(ResultResponse.of(ResultCode.S3_UPLOAD_SUCCESS, drawingUrl));
     }

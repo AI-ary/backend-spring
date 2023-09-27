@@ -32,6 +32,9 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 250)
     private String password;
 
+    @Column(nullable = true, length = 250)
+    private String profileImage;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Theme theme;
@@ -47,11 +50,12 @@ public class User extends BaseEntity {
     private List<Diary> diaries = new ArrayList<>();
 
     @Builder
-    private User(String email, String nickname, String password, Role role) {
+    private User(String email, String nickname, String password, String profileImage ,Role role) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
+        this.profileImage = null;
         this.theme = Theme.ORIGINAL;
     }
 
@@ -65,6 +69,9 @@ public class User extends BaseEntity {
 
     public void updateTheme(String theme){
         this.theme = Theme.valueOf(theme);
+    }
+    public void updateProfileImage(String profileImage){
+        this.profileImage = profileImage;
     }
 
 }

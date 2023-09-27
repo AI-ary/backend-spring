@@ -1,9 +1,6 @@
 package com.aiary.aiary.domain.user.controller;
 
-import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
-import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
-import com.aiary.aiary.domain.user.dto.request.UserThemeReq;
-import com.aiary.aiary.domain.user.dto.request.UserTokenReq;
+import com.aiary.aiary.domain.user.dto.request.*;
 import com.aiary.aiary.domain.user.dto.response.UserProfileRes;
 import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.service.AuthService;
@@ -11,6 +8,7 @@ import com.aiary.aiary.domain.user.service.UserService;
 import com.aiary.aiary.domain.user.validator.UserValidator;
 import com.aiary.aiary.global.jwt.JwtToken;
 import com.aiary.aiary.global.result.ResultResponse;
+import com.aiary.aiary.global.s3.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
@@ -18,8 +16,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+
+import java.io.IOException;
 
 import static com.aiary.aiary.global.result.ResultCode.*;
 
@@ -31,6 +32,7 @@ public class UserController {
     private final UserService userService;
     private final AuthService authService;
     private final UserValidator userValidator;
+    private final S3Service s3Service;
 
 
     @Operation(summary = "회원가입")
@@ -64,11 +66,23 @@ public class UserController {
     }
 
     @Operation(summary = "테마 변경")
-    @PostMapping("/theme")
+    @PutMapping("/theme")
     public ResponseEntity<ResultResponse> updateTheme(@AuthenticationPrincipal UserDetail user,
                                                       @RequestBody @Valid UserThemeReq userThemeReq){
         userService.updateTheme(user.getUser(), userThemeReq);
         return ResponseEntity.ok(ResultResponse.of(USER_UPDATE_THEME_SUCCESS));
+    }
+
+    @Operation(summary = "프로필 변경")
+    @PutMapping("/profile")
+    public ResponseEntity<ResultResponse> updateProfile(@AuthenticationPrincipal UserDetail user,
+                                                        @RequestPart("file") MultipartFile multipartFile) throws IOException {
+        if (user.existsByProfileImage()) { // 기존 이미지가 있었다면 S3 이미지 삭제
+            s3Service.deleteFile(user.getProfileImage());
+        }
+        String drawingUrl = s3Service.saveFile(multipartFile, "profile", user.getUsername());
+        userService.updateProfileImage(user.getUser(), drawingUrl);
+        return ResponseEntity.ok(ResultResponse.of(USER_UPDATE_PROFILE_IMAGE_SUCCESS));
     }
 
     @Operation(summary = "사용자 프로필 조회")
@@ -77,5 +91,4 @@ public class UserController {
         UserProfileRes userProfile = userService.findUserProfile(user.getUser());
         return ResponseEntity.ok(ResultResponse.of(USER_PROFILE_SUCCESS, userProfile));
     }
-
 }

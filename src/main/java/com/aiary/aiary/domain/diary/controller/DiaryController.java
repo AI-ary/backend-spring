@@ -6,7 +6,7 @@ import com.aiary.aiary.domain.diary.service.DiaryService;
 import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.global.result.ResultCode;
 import com.aiary.aiary.global.result.ResultResponse;
-import com.aiary.aiary.global.s3.service.S3UploadService;
+import com.aiary.aiary.global.s3.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
@@ -29,14 +29,14 @@ import java.io.IOException;
 public class DiaryController {
 
     private final DiaryService diaryService;
-    private final S3UploadService s3UploadService;
+    private final S3Service s3Service;
 
     @Operation(summary = "일기 등록")
     @PostMapping
     public ResponseEntity<ResultResponse> createDiary(@AuthenticationPrincipal UserDetail user,
                                                       @RequestPart("file") MultipartFile multipartFile,
                                                       @Valid @RequestPart(value="createRequest") DiaryCreateReq createRequest) throws IOException {
-        String drawingUrl = s3UploadService.saveFile(multipartFile, user.getUsername());
+        String drawingUrl = s3Service.saveFile(multipartFile, "result", user.getUsername());
         diaryService.createDiary(user, createRequest, drawingUrl);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_CREATE_SUCCESS));
     }
@@ -52,7 +52,7 @@ public class DiaryController {
     @Operation(summary = "일기 월 별 조회")
     @GetMapping
     public ResponseEntity<ResultResponse> getMonthlyDiary(@AuthenticationPrincipal UserDetail user,
-                                                           @RequestParam("diary_date") String diaryDate){
+                                                          @RequestParam("diary_date") String diaryDate){
         return ResponseEntity.ok(ResultResponse
                 .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiaryByDate(user, diaryDate)));
     }
