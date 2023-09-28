@@ -22,7 +22,9 @@ import static com.aiary.aiary.support.docs.ApiDocumentUtils.getDocumentRequest;
 import static com.aiary.aiary.support.docs.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(DiaryController.class)
 @ExtendWith(RestDocumentationExtension.class)
-@DisplayName("Diary 컨트롤러의 ")
+@DisplayName("Diary 컨트롤러에 ")
 class DiaryControllerTest extends MockApiTest {
 
     @MockBean
@@ -40,9 +42,9 @@ class DiaryControllerTest extends MockApiTest {
 
     @Test
     @WithCustomMockUser
-    @DisplayName("일기가 등록되는지 확인한다.")
+    @DisplayName("일기가 등록될 수 있다.")
     void createDiary() throws Exception {
-
+        //given
         MockMultipartFile file = new MockMultipartFile(
                 "file",      // 파라미터 이름
                 "file_name", // 파일 이름
@@ -62,6 +64,7 @@ class DiaryControllerTest extends MockApiTest {
         String token = "accessToken";
         diaryService.createDiary(any(), any(), any());
 
+        //when
         ResultActions perform =
                 mockMvc.perform(
                         multipart("/diaries")
@@ -79,5 +82,25 @@ class DiaryControllerTest extends MockApiTest {
                         getDocumentRequest(),
                         getDocumentResponse()));
 
+    }
+
+    @Test
+    @DisplayName("사용자가 작성한 일기가 PK로 삭제될 수 있다.")
+    void deleteDiary() throws Exception {
+        //given
+        doNothing().when(diaryService).deleteDiary(any(), any());
+
+        //when
+        ResultActions perform =
+                mockMvc.perform(
+                        delete("/diaries/{diaryId}", 1L));
+        //then
+        perform.andExpect(status().isOk());
+
+        //docs
+        perform.andDo(print())
+                .andDo(document("delete diary",
+                        getDocumentRequest(),
+                        getDocumentResponse()));
     }
 }

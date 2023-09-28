@@ -23,7 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.assertj.core.api.Assertions.*;
 @DatabaseTest
-@DisplayName("Diary 서비스의 ")
+@DisplayName("Diary 서비스에 ")
 class DiaryServiceTest {
 
     @Autowired
@@ -34,7 +34,7 @@ class DiaryServiceTest {
     private UserRepository userRepository;
 
     @Test
-    @DisplayName("일기가 생성을 확인한다.")
+    @DisplayName("일기가 생성할 수 있다.")
     void createDiary(){
         //given
         userRepository.save(UserFixture.DIARY_CREATE_USER);
@@ -59,7 +59,7 @@ class DiaryServiceTest {
     }
 
     @Test
-    @DisplayName("사용자가 작성한 일기가 PK로 삭제가 되는지 확인한다.")
+    @DisplayName("사용자가 작성한 일기가 PK로 삭제가 될 수 있다.")
     void deleteDiary(){
         //given
         userRepository.save(UserFixture.DIARY_DELETE_USER);
