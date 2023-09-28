@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiaryFixture {
+public class DiaryServiceFixture {
 
     public static final Diary CREATE_DIARY = Diary.builder()
             .title("일기 제목")

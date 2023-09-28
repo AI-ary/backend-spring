@@ -11,7 +11,7 @@ import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.exception.UnAuthorizedAccessException;
 import com.aiary.aiary.domain.user.repository.UserRepository;
 import com.aiary.aiary.support.database.DatabaseTest;
-import com.aiary.aiary.support.fixture.DiaryFixture;
+import com.aiary.aiary.support.fixture.DiaryServiceFixture;
 import com.aiary.aiary.support.fixture.UserFixture;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,9 @@ class DiaryServiceTest {
         //given
         userRepository.save(UserFixture.DIARY_CREATE_USER);
         UserDetail userDetail = UserFixture.DIARY_CREATE_USERDETAIL;
-        DiaryCreateReq diaryCreateReq = DiaryFixture.DIARY_CREATE_REQ;
+        DiaryCreateReq diaryCreateReq = DiaryServiceFixture.DIARY_CREATE_REQ;
         String diaryUrl = "url";
-        Diary expect = diaryRepository.save(DiaryFixture.CREATE_DIARY);
+        Diary expect = diaryRepository.save(DiaryServiceFixture.CREATE_DIARY);
 
         //when
         diaryService.createDiary(userDetail, diaryCreateReq, diaryUrl);
@@ -64,8 +64,8 @@ class DiaryServiceTest {
         //given
         userRepository.save(UserFixture.DIARY_DELETE_USER);
         userRepository.save(UserFixture.DIARY_DELETE_UNAUTHOR_USER);
-        Diary diary = diaryRepository.save(DiaryFixture.DELETE_DIARY);
-        Diary unAuthorDiary = diaryRepository.save(DiaryFixture.DELETE_UNAUTHOR_DIARY);
+        Diary diary = diaryRepository.save(DiaryServiceFixture.DELETE_DIARY);
+        Diary unAuthorDiary = diaryRepository.save(DiaryServiceFixture.DELETE_UNAUTHOR_DIARY);
 
         //when
         diaryService.deleteDiary(UserFixture.DIAEY_DELETE_USERDETAIL, diary.getId());
@@ -86,7 +86,7 @@ class DiaryServiceTest {
     void findMonthlyDiaryByDate(){
         //given
         userRepository.save(UserFixture.DIARY_FIND_MONTH_USER);
-        diaryRepository.saveAll(DiaryFixture.INSERT_FIND_DIARIES());
+        diaryRepository.saveAll(DiaryServiceFixture.INSERT_FIND_DIARIES());
 
         //when
         MonthlyDiaryRes monthlyDiaryRes = diaryService.findMonthlyDiaryByDate(UserFixture.DIARY_FIND_MONTH_USERDETAIL, "2023-09");
@@ -103,7 +103,7 @@ class DiaryServiceTest {
     void searchDiariesByDate(){
         //given
         userRepository.save(UserFixture.DIARY_SEARCH_USER);
-        diaryRepository.saveAll(DiaryFixture.INSERT_SEARCH_DIARIES());
+        diaryRepository.saveAll(DiaryServiceFixture.INSERT_SEARCH_DIARIES());
         PageRequest pageRequest = PageRequest.of(0, 40);
 
         //when
