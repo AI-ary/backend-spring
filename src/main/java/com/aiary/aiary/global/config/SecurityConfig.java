@@ -37,7 +37,7 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/users/join", "/users/login").permitAll() // 회원가입, 로그인, 로그아웃 API는 인증 없이 허용
+            .antMatchers("/users/join", "/users/login", "/users/reissue").permitAll() // 회원가입, 로그인, 토큰 재발급 API는 인증 없이 허용
             .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll() // swagger 인증 없이 허용
             .anyRequest().authenticated()
             .and()
