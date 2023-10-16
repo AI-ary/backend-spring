@@ -10,7 +10,6 @@ import com.aiary.aiary.domain.diary.repository.DiaryRepository;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.exception.UnAuthorizedAccessException;
-import com.aiary.aiary.domain.user.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +26,6 @@ import java.util.Objects;
 public class DiaryService {
 
     private static final String FIRST_DAY = "-01";
-    private final UserService userService;
     private final DiaryRepository diaryRepository;
     private final DiaryMapper diaryMapper;
 
@@ -37,9 +35,9 @@ public class DiaryService {
     }
   
     @Transactional
-    public void deleteDiary(UserDetail userDetail,  Long diaryId){
+    public void deleteDiary(UserDetail userDetail, Long diaryId){
         Diary deleteDiary = findDiaryWithUser(diaryId);
-        User user = userService.findUserById(userDetail.getUserId());
+        User user = userDetail.getUser();
 
         if (!Objects.equals(user.getId(), deleteDiary.getUser().getId()))
             throw new UnAuthorizedAccessException();

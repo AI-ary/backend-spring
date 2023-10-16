@@ -49,12 +49,12 @@ public class DiaryMapper {
     }
 
     public SearchDiariesRes toDiarySlice(Slice<Diary> diaries){
-        List<DiaryRes> diaryInfos = diaries.stream()
+        List<DiaryRes> diaryRes = diaries.stream()
                 .map(this::toEntity)
                 .collect(Collectors.toList());
 
         return SearchDiariesRes.builder()
-                .diaryInfos(diaryInfos)
+                .diaryRes(diaryRes)
                 .curPageNumber(diaries.getNumber())
                 .hasNext(diaries.hasNext())
                 .hasPrevious(diaries.hasPrevious())

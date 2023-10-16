@@ -1,0 +1,13 @@
+package com.aiary.aiary.support.utils;
+
+import org.springframework.security.test.context.support.WithSecurityContext;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+@WithSecurityContext(factory = WithCustomMockUserSecurityContextFactory.class)
+public @interface WithCustomMockUser {
+    String userUuid() default "test@email";
+    String role() default "USER";
+}
