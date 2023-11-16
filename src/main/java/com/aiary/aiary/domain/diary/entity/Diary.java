@@ -34,7 +34,7 @@ public class Diary extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String contents;
 
-    @Column(name = "drawing_date", nullable = false)
+    @Column(name = "diary_date", nullable = false)
     private LocalDate diaryDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
