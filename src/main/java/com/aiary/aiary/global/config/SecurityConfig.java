@@ -39,6 +39,7 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/users/join", "/users/login", "/users/reissue").permitAll() // 회원가입, 로그인, 토큰 재발급 API는 인증 없이 허용
             .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll() // swagger 인증 없이 허용
+            .antMatchers("/actuator/**").permitAll()  // Spring Actuator 인증 없이 허용
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate),
