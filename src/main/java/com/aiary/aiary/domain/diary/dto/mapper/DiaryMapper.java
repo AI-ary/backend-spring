@@ -6,9 +6,10 @@ import com.aiary.aiary.domain.diary.dto.response.DiaryRes;
 import com.aiary.aiary.domain.diary.dto.response.MonthlyDiaryRes;
 import com.aiary.aiary.domain.diary.dto.response.SearchDiariesRes;
 import com.aiary.aiary.domain.diary.entity.Diary;
+import com.aiary.aiary.domain.diary.entity.DiaryDocument;
 import com.aiary.aiary.domain.diary.entity.Weather;
 import com.aiary.aiary.domain.user.entity.User;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -41,6 +42,18 @@ public class DiaryMapper {
                 .build();
     }
 
+    public DiaryRes toDocument(DiaryDocument diary){
+        return DiaryRes.builder()
+                .diaryId(diary.getId())
+                .title(diary.getTitle())
+                .weather(Weather.valueOf(diary.getWeather()))
+                .emoji(diary.getEmoji())
+                .contents(diary.getContents())
+                .diaryDate(diary.getDiaryDate().toString())
+                .drawingUrl(diary.getDrawingUrl())
+                .build();
+    }
+
     public MonthlyDiaryRes toMonthlyDiaryList(List<Diary> monthlyDiaries){
         List<DiaryRes> diaryRes = monthlyDiaries.stream()
                 .map(this::toEntity)
@@ -48,9 +61,9 @@ public class DiaryMapper {
         return MonthlyDiaryRes.builder().monthlyDiaryRes(diaryRes).build();
     }
 
-    public SearchDiariesRes toDiarySlice(Slice<Diary> diaries){
+    public SearchDiariesRes toSearchDiaryList (Page<DiaryDocument> diaries){
         List<DiaryRes> diaryInfos = diaries.stream()
-                .map(this::toEntity)
+                .map(this::toDocument)
                 .collect(Collectors.toList());
 
         return SearchDiariesRes.builder()
@@ -60,8 +73,4 @@ public class DiaryMapper {
                 .hasPrevious(diaries.hasPrevious())
                 .build();
     }
-
-
-
-
 }
