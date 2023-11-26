@@ -1,23 +1,5 @@
 version: "3"
 services:
-  mysql:
-    container_name: mysql
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-    command:
-      - '--character-set-server=utf8mb4'
-      - '--collation-server=utf8mb4_unicode_ci'
-    ports:
-      - "3307:3306"
-    volumes:
-      - ./data:/var/lib/mysql
-    networks:
-      - aiary
-
   backend:
     container_name: backend
     build:
@@ -27,11 +9,6 @@ services:
       - mysql
     ports:
       - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: ${MYSQL_URL}
-      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - aiary
 
@@ -47,6 +24,42 @@ services:
       - "mode=standalone"
     restart: always
     command: redis-server
+    networks:
+      - aiary
+
+  elasticsearch:
+    container_name: elasticsearch
+    restart: always
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - ES_JAVA_OPTS=-Xms2048m -Xmx2048m
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elk/elasticsearch/data:/usr/share/elasticsearch/data
+    networks:
+      - aiary
+
+  logstash:
+    container_name: logstash
+    image: docker.elastic.co/logstash/logstash:8.8.1  # elasticsearch 와 같은 버전
+    build:
+      context: ./elk   # mysql-connector-java 를 설치하기 위해 Dockfile 빌드
+    volumes:           # input conf 설정파일을 컨테이너 내부 경로에 볼륨마운트
+      - ./elk/logstash/pipeline/logstash.conf.example:/usr/share/logstash/pipeline/logstash.conf.example
+    ports:
+      - "5044:5044"
+    environment:
+      - "xpack.monitoring.enabled=false"
+    depends_on:
+      - elasticsearch
     networks:
       - aiary
 
