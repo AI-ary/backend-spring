@@ -1,16 +1,14 @@
 version: "3"
 services:
-  backend:
-    container_name: backend
-    build:
-      context: .
-    restart: always
-    depends_on:
-      - mysql
-    ports:
-      - "8080:8080"
-    networks:
-      - aiary
+#  backend:
+#    container_name: backend
+#    build:
+#      context: .
+#    restart: always
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - aiary
 
   redis:
     container_name: redis
@@ -53,7 +51,7 @@ services:
     build:
       context: ./elk   # mysql-connector-java 를 설치하기 위해 Dockfile 빌드
     volumes:           # input conf 설정파일을 컨테이너 내부 경로에 볼륨마운트
-      - ./elk/logstash/pipeline/logstash.conf.example:/usr/share/logstash/pipeline/logstash.conf.example
+      - ./elk/logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     ports:
       - "5044:5044"
     environment:

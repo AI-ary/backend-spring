@@ -1,20 +1,13 @@
 package com.aiary.aiary.domain.diary.entity;
 
-import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.global.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Document(indexName = "diary")
 @Getter
