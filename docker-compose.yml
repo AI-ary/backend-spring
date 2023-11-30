@@ -1,14 +1,14 @@
 version: "3"
 services:
-#  backend:
-#    container_name: backend
-#    build:
-#      context: .
-#    restart: always
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - aiary
+  backend:
+    container_name: backend
+    build:
+      context: .
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - aiary
 
   redis:
     container_name: redis
