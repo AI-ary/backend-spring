@@ -54,7 +54,15 @@ public class UserDetail implements UserDetails {
         return true;
     }
 
-    public Long getUserId(){
+    public Long getUserId() {
         return user.getId();
+    }
+
+    public String getProfileImage() {
+        return user.getProfileImage();
+    }
+
+    public boolean existsByProfileImage() {
+        return user.getProfileImage() != null;
     }
 }

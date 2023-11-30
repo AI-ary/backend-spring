@@ -15,5 +15,6 @@ public class UserProfileRes {
     private String email;
     private String nickname;
     private Theme theme;
+    private String profileImage;
 
 }

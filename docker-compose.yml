@@ -24,7 +24,7 @@ services:
     command: redis-server
     networks:
       - aiary
-
+      
   elasticsearch:
     container_name: elasticsearch
     restart: always
@@ -58,7 +58,7 @@ services:
       - "xpack.monitoring.enabled=false"
     depends_on:
       - elasticsearch
-    networks:
+     networks:
       - aiary
 
 networks:

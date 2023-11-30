@@ -64,7 +64,7 @@ public class AuthService {
     public JwtToken reissue(UserTokenReq userTokenReq) {
         // Refresh Token 검증
         if (!jwtTokenProvider.validateToken(userTokenReq.getRefreshToken())) {
-            throw new IllegalArgumentException("Refresh Token 정보가 유효하지 않습니다.");
+            throw new UnAuthorizedAccessException();
         }
 
         Authentication authentication = jwtTokenProvider.getAuthentication(userTokenReq.getAccessToken());

@@ -22,6 +22,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .theme(user.getTheme())
+                .profileImage(user.getProfileImage())
                 .build();
     }
 }

@@ -14,7 +14,9 @@ public enum ResultCode {
   USER_LOGOUT_SUCCESS("U005", "회원 로그아웃 성공"),
   USER_REISSUE_SUCCESS("U006", "토큰 재발급 성공"),
   USER_UPDATE_THEME_SUCCESS("U007", "회원 테마 변경 성공"),
-  USER_PROFILE_SUCCESS("U008", "회원 프로필 조회 성공"),
+  USER_UPDATE_PROFILE_IMAGE_SUCCESS("U008", "회원 프로필 이미지 변경 성공"),
+
+  USER_PROFILE_SUCCESS("U009", "회원 프로필 조회 성공"),
 
   // Diary
   DIARY_CREATE_SUCCESS("D001", "그림일기 등록 성공"),
