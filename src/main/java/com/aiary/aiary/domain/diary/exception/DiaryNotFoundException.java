@@ -5,7 +5,7 @@ import com.aiary.aiary.global.error.exception.BusinessException;
 
 public class DiaryNotFoundException extends BusinessException {
 
-    public DiaryNotFoundException(){
+    public DiaryNotFoundException() {
         super(ErrorCode.DIARY_NOT_FOUND_ERROR);
     }
 }

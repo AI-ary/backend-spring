@@ -9,17 +9,22 @@ import com.aiary.aiary.global.result.ResultResponse;
 import com.aiary.aiary.global.s3.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
+import javax.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-import java.io.IOException;
 
 
 @Tag(name = "Diary", description = "일기 API")
@@ -34,8 +39,9 @@ public class DiaryController {
     @Operation(summary = "일기 등록")
     @PostMapping
     public ResponseEntity<ResultResponse> createDiary(@AuthenticationPrincipal UserDetail user,
-                                                      @RequestPart("file") MultipartFile multipartFile,
-                                                      @Valid @RequestPart(value="createRequest") DiaryCreateReq createRequest) throws IOException {
+        @RequestPart("file") MultipartFile multipartFile,
+        @Valid @RequestPart(value = "createRequest") DiaryCreateReq createRequest)
+        throws IOException {
         String drawingUrl = s3Service.saveFile(multipartFile, "result", user.getUsername());
         diaryService.createDiary(user, createRequest, drawingUrl);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_CREATE_SUCCESS));
@@ -44,7 +50,7 @@ public class DiaryController {
     @Operation(summary = "일기 삭제")
     @DeleteMapping("/{diaryId}")
     public ResponseEntity<ResultResponse> deleteDiary(@AuthenticationPrincipal UserDetail user,
-                                                      @PathVariable Long diaryId){
+        @PathVariable Long diaryId) {
         diaryService.deleteDiary(user, diaryId);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.DIARY_DELETE_SUCCESS));
     }
@@ -52,22 +58,24 @@ public class DiaryController {
     @Operation(summary = "일기 월 별 조회")
     @GetMapping
     public ResponseEntity<ResultResponse> getMonthlyDiary(@AuthenticationPrincipal UserDetail user,
-                                                          @RequestParam("diary_date") String diaryDate){
+        @RequestParam("diary_date") String diaryDate) {
         return ResponseEntity.ok(ResultResponse
-                .of(ResultCode.DIARY_READ_SUCCESS, diaryService.findMonthlyDiaryByDate(user, diaryDate)));
+            .of(ResultCode.DIARY_READ_SUCCESS,
+                diaryService.findMonthlyDiaryByDate(user, diaryDate)));
     }
 
     @Operation(summary = "일기 제목/내용 검색")
     @GetMapping("/search")
-    public ResponseEntity<ResultResponse> searchDiariesByKeyWord(@AuthenticationPrincipal UserDetail user,
-                                                                 @RequestParam(defaultValue = "0", required = false) int page,
-                                                                 @RequestParam(defaultValue = "10", required = false)int size,
-                                                                 @RequestParam("diary_date") String diaryDate,
-                                                                 @RequestParam String keyword){
+    public ResponseEntity<ResultResponse> searchDiariesByKeyWord(
+        @AuthenticationPrincipal UserDetail user,
+        @RequestParam(defaultValue = "0", required = false) int page,
+        @RequestParam(defaultValue = "10", required = false) int size,
+        @RequestParam("diary_date") String diaryDate,
+        @RequestParam String keyword) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return ResponseEntity.ok(ResultResponse
-                .of(ResultCode.DIARY_READ_SUCCESS,
-                        diaryService.searchDiariesByKeyword(user, pageRequest, diaryDate, keyword)));
+            .of(ResultCode.DIARY_READ_SUCCESS,
+                diaryService.searchDiariesByKeyword(user, pageRequest, diaryDate, keyword)));
 
     }
 }

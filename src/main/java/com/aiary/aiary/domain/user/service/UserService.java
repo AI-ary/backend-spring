@@ -1,11 +1,11 @@
 package com.aiary.aiary.domain.user.service;
 
+import com.aiary.aiary.domain.user.dto.mapper.UserMapper;
 import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
 import com.aiary.aiary.domain.user.dto.request.UserThemeReq;
 import com.aiary.aiary.domain.user.dto.response.UserProfileRes;
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.domain.user.exception.UserNotFoundException;
-import com.aiary.aiary.domain.user.dto.mapper.UserMapper;
 import com.aiary.aiary.domain.user.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
@@ -33,13 +34,13 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateTheme(User user, UserThemeReq userThemeReq){
+    public void updateTheme(User user, UserThemeReq userThemeReq) {
         user.updateTheme(userThemeReq.getTheme());
         userRepository.save(user);
     }
 
-    public void updateProfileImage(User user, String ProfileImage){
-        user.updateProfileImage(ProfileImage);
+    public void updateProfileImage(User user, String profileImage) {
+        user.updateProfileImage(profileImage);
         userRepository.save(user);
     }
 

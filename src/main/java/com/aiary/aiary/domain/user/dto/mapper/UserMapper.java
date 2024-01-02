@@ -8,21 +8,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
+
     public User toEntity(UserJoinReq userJoinReq) {
         return User.builder()
-                .email(userJoinReq.getEmail())
-                .password(userJoinReq.getPassword())
-                .nickname(userJoinReq.getNickname())
-                .role(Role.USER)
-                .build();
+            .email(userJoinReq.getEmail())
+            .password(userJoinReq.getPassword())
+            .nickname(userJoinReq.getNickname())
+            .role(Role.USER)
+            .build();
     }
 
-    public UserProfileRes toUserProfile(User user){
+    public UserProfileRes toUserProfile(User user) {
         return UserProfileRes.builder()
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .theme(user.getTheme())
-                .profileImage(user.getProfileImage())
-                .build();
+            .email(user.getEmail())
+            .nickname(user.getNickname())
+            .theme(user.getTheme())
+            .profileImage(user.getProfileImage())
+            .build();
     }
 }

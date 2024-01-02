@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate<String, Object> redisTemplate;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -37,13 +38,15 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/users/join", "/users/login", "/users/reissue").permitAll() // 회원가입, 로그인, 토큰 재발급 API는 인증 없이 허용
-            .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll() // swagger 인증 없이 허용
+            .antMatchers("/users/join", "/users/login", "/users/reissue")
+            .permitAll() // 회원가입, 로그인, 토큰 재발급 API는 인증 없이 허용
+            .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**")
+            .permitAll() // swagger 인증 없이 허용
             .antMatchers("/actuator/**").permitAll()  // Spring Actuator 인증 없이 허용
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate),
-                    UsernamePasswordAuthenticationFilter.class);
+                UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

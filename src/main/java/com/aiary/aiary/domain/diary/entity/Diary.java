@@ -2,10 +2,22 @@ package com.aiary.aiary.domain.diary.entity;
 
 import com.aiary.aiary.domain.user.entity.User;
 import com.aiary.aiary.global.entity.BaseEntity;
-import lombok.*;
-
-import javax.persistence.*;
 import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -43,7 +55,7 @@ public class Diary extends BaseEntity {
 
     @Builder
     public Diary(String title, Weather weather, String emoji, String drawingUrl,
-                 String contents, LocalDate diaryDate, User user) {
+        String contents, LocalDate diaryDate, User user) {
         this.title = title;
         this.weather = weather;
         this.emoji = emoji;

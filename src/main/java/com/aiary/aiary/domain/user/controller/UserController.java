@@ -1,6 +1,17 @@
 package com.aiary.aiary.domain.user.controller;
 
-import com.aiary.aiary.domain.user.dto.request.*;
+import static com.aiary.aiary.global.result.ResultCode.USER_LOGIN_SUCCESS;
+import static com.aiary.aiary.global.result.ResultCode.USER_LOGOUT_SUCCESS;
+import static com.aiary.aiary.global.result.ResultCode.USER_PROFILE_SUCCESS;
+import static com.aiary.aiary.global.result.ResultCode.USER_REGISTRATION_SUCCESS;
+import static com.aiary.aiary.global.result.ResultCode.USER_REISSUE_SUCCESS;
+import static com.aiary.aiary.global.result.ResultCode.USER_UPDATE_PROFILE_IMAGE_SUCCESS;
+import static com.aiary.aiary.global.result.ResultCode.USER_UPDATE_THEME_SUCCESS;
+
+import com.aiary.aiary.domain.user.dto.request.UserJoinReq;
+import com.aiary.aiary.domain.user.dto.request.UserLoginReq;
+import com.aiary.aiary.domain.user.dto.request.UserThemeReq;
+import com.aiary.aiary.domain.user.dto.request.UserTokenReq;
 import com.aiary.aiary.domain.user.dto.response.UserProfileRes;
 import com.aiary.aiary.domain.user.entity.UserDetail;
 import com.aiary.aiary.domain.user.service.AuthService;
@@ -11,24 +22,27 @@ import com.aiary.aiary.global.result.ResultResponse;
 import com.aiary.aiary.global.s3.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
+import javax.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-
-import java.io.IOException;
-
-import static com.aiary.aiary.global.result.ResultCode.*;
 
 @Tag(name = "User", description = "사용자 API")
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @RequestMapping("/users")
 public class UserController {
+
     private final UserService userService;
     private final AuthService authService;
     private final UserValidator userValidator;
@@ -38,7 +52,7 @@ public class UserController {
     @Operation(summary = "회원가입")
     @PostMapping("/join")
     public ResponseEntity<ResultResponse> signup(
-            @RequestBody @Valid UserJoinReq userJoinReq) {
+        @RequestBody @Valid UserJoinReq userJoinReq) {
         userValidator.isDuplicatedUser(userJoinReq);
         userService.register(userJoinReq);
         return ResponseEntity.ok(ResultResponse.of(USER_REGISTRATION_SUCCESS));
@@ -68,7 +82,7 @@ public class UserController {
     @Operation(summary = "테마 변경")
     @PutMapping("/theme")
     public ResponseEntity<ResultResponse> updateTheme(@AuthenticationPrincipal UserDetail user,
-                                                      @RequestBody @Valid UserThemeReq userThemeReq){
+        @RequestBody @Valid UserThemeReq userThemeReq) {
         userService.updateTheme(user.getUser(), userThemeReq);
         return ResponseEntity.ok(ResultResponse.of(USER_UPDATE_THEME_SUCCESS));
     }
@@ -76,7 +90,7 @@ public class UserController {
     @Operation(summary = "프로필 변경")
     @PutMapping("/profile")
     public ResponseEntity<ResultResponse> updateProfile(@AuthenticationPrincipal UserDetail user,
-                                                        @RequestPart("file") MultipartFile multipartFile) throws IOException {
+        @RequestPart("file") MultipartFile multipartFile) throws IOException {
         if (user.existsByProfileImage()) { // 기존 이미지가 있었다면 S3 이미지 삭제
             s3Service.deleteFile(user.getProfileImage());
         }
@@ -87,7 +101,8 @@ public class UserController {
 
     @Operation(summary = "사용자 프로필 조회")
     @GetMapping("/profile")
-    public ResponseEntity<ResultResponse> findUserProfile(@AuthenticationPrincipal UserDetail user){
+    public ResponseEntity<ResultResponse> findUserProfile(
+        @AuthenticationPrincipal UserDetail user) {
         UserProfileRes userProfile = userService.findUserProfile(user.getUser());
         return ResponseEntity.ok(ResultResponse.of(USER_PROFILE_SUCCESS, userProfile));
     }
