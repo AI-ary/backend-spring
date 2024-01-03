@@ -1,6 +1,9 @@
 package com.aiary.aiary.global.config;
 
 import io.lettuce.core.ReadFrom;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,12 +28,10 @@ public class RedisRepositoryConfig {
             .build();
 
         RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration();
-        clusterConfiguration.addClusterNode(new RedisNode("node1", 7000));
-        clusterConfiguration.addClusterNode(new RedisNode("node2", 7001));
-        clusterConfiguration.addClusterNode(new RedisNode("node3", 7002));
-        clusterConfiguration.addClusterNode(new RedisNode("node4", 7003));
-        clusterConfiguration.addClusterNode(new RedisNode("node5", 7004));
-        clusterConfiguration.addClusterNode(new RedisNode("node6", 7005));
+        List<RedisNode> redisNodes = IntStream.rangeClosed(1, 6)
+            .mapToObj(node -> new RedisNode("node" + node, 7000 + node))
+            .collect(Collectors.toList());
+        clusterConfiguration.setClusterNodes(redisNodes);
 
         return new LettuceConnectionFactory(clusterConfiguration, clientConfig);
     }
