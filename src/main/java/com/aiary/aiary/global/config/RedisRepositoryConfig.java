@@ -1,10 +1,13 @@
 package com.aiary.aiary.global.config;
 
+import io.lettuce.core.ReadFrom;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisNode;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
@@ -15,17 +18,23 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 public class RedisRepositoryConfig {
 
-    private final RedisProperties redisProperties;
-
-    // lettuce
-    // RedisConnectionFactory 인터페이스를 통해 LettuceConnectionFactory를 생성하여 반환한다.
-    // RedisProperties로 yaml에 저장한 host, post를 가지고 와서 연결한다.
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
+        LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
+            .readFrom(ReadFrom.REPLICA_PREFERRED)
+            .build();
+
+        RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration();
+        clusterConfiguration.addClusterNode(new RedisNode("node1", 7000));
+        clusterConfiguration.addClusterNode(new RedisNode("node2", 7001));
+        clusterConfiguration.addClusterNode(new RedisNode("node3", 7002));
+        clusterConfiguration.addClusterNode(new RedisNode("node4", 7003));
+        clusterConfiguration.addClusterNode(new RedisNode("node5", 7004));
+        clusterConfiguration.addClusterNode(new RedisNode("node6", 7005));
+
+        return new LettuceConnectionFactory(clusterConfiguration, clientConfig);
     }
 
-    // setKeySerializer, setValueSerializer 설정으로 redis-cli를 통해 직접 데이터를 보는게 가능하다.
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
