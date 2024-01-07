@@ -28,8 +28,8 @@ public class RedisRepositoryConfig {
             .build();
 
         RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration();
-        List<RedisNode> redisNodes = IntStream.rangeClosed(1, 6)
-            .mapToObj(node -> new RedisNode("node" + node, 7000 + node))
+        List<RedisNode> redisNodes = IntStream.rangeClosed(7000, 7005)
+            .mapToObj(port -> new RedisNode("localhost", port))
             .collect(Collectors.toList());
         clusterConfiguration.setClusterNodes(redisNodes);
 
