@@ -24,11 +24,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
 
-    private final CustomUserDetailService customUserDetailService;
-
-    private final Key key;
     private static final long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L; // 토큰 유효시간 30분
     private static final long REFRESH_TOKEN_VALID_TIME = 72 * 60 * 1000L;  // 3일
+    private final CustomUserDetailService customUserDetailService;
+    private final Key key;
 
     // 시크릿키 초기화, secretKey를 Base64로 인코딩한다.
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey,
